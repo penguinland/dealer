@@ -3,3 +3,11 @@ scan.c
 *.o
 dealer
 dealer.tar.gz
+
+*.swp
+
+# The following showed up after running make
+Random/libgnurand.a
+dealer.6
+dealer.dpp.6
+
