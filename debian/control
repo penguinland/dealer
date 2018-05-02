@@ -1,0 +1,21 @@
+Source: dealer
+Section: games
+Priority: optional
+Maintainer: Christoph Berg <myon@debian.org>
+Build-Depends: debhelper (>= 9), bison, perl
+Standards-Version: 3.9.3
+Vcs-Browser: http://svn.df7cb.de/debian/dealer/trunk/
+Vcs-Svn: http://svn.df7cb.de/debian/dealer/trunk/
+
+Package: dealer
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: bridge hand generator
+ This program generates bridge hands for partnerships bidding training or
+ for generating statistics that can be used to design conventions, or win
+ postmortems. Dealer has been used in many bridge publications.
+ .
+ http://www.dombo.org/henk/dealer.html
+ .
+ Bridge is an intellectually challenging card game for four players.
+ The "deal" package provides a similar generator programmable in Tcl.

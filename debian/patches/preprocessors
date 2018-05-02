@@ -1,0 +1,11 @@
+--- dealer-0.20040530.orig/Pre_Processors/dpp
++++ dealer-0.20040530/Pre_Processors/dpp
+@@ -1,6 +1,6 @@
+-#!/usr/bin/perl -I.
++#!/usr/bin/perl
+ 
+-use Dist;
++use Dealer::Dist;
+ use strict;
+ use Carp;
+ 

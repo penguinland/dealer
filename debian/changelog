@@ -1,0 +1,26 @@
+dealer (0.20040530-4) unstable; urgency=low
+
+  * Enable build hardening.
+
+ -- Christoph Berg <myon@debian.org>  Sun, 04 Mar 2012 14:24:11 +0100
+
+dealer (0.20040530-3) unstable; urgency=low
+
+  * Improve manpage a bit.
+
+ -- Christoph Berg <myon@debian.org>  Thu, 17 May 2007 22:07:27 +0200
+
+dealer (0.20040530-2) unstable; urgency=low
+
+  * Fix spelling error in Description (Closes: #363231).
+
+ -- Christoph Berg <myon@debian.org>  Tue, 18 Apr 2006 17:14:34 +0200
+
+dealer (0.20040530-1) unstable; urgency=low
+
+  * Initial release (Closes: #323076).
+  * dealer.c: 64bit fix.
+  * Wrote manpages.
+
+ -- Christoph Berg <myon@debian.org>  Wed,  7 Sep 2005 23:32:20 +0200
+

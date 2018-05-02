@@ -1,0 +1,74 @@
+#!/usr/bin/make -f
+
+# Uncomment this to turn on verbose mode.
+#export DH_VERBOSE=1
+
+CFLAGS = -Wall -g
+D=$(CURDIR)/debian/dealer
+
+ifneq (,$(findstring noopt,$(DEB_BUILD_OPTIONS)))
+	CFLAGS += -O0
+else
+	CFLAGS += -O2
+endif
+
+configure: configure-stamp
+configure-stamp:
+	dh_testdir
+	# some generated files in tarball are removed by clean
+	if [ ! -f .defs.c ] ; then cp defs.c .defs.c ; fi
+	if [ ! -f .scan.c ] ; then cp scan.c .scan.c ; fi
+	touch $@
+
+build-indep:
+
+build build-arch: build-stamp
+build-stamp: configure-stamp
+	dh_testdir
+	$(MAKE)
+	touch $@
+
+clean:
+	dh_testdir
+	dh_testroot
+	rm -f build-stamp configure-stamp
+
+	# some generated files in tarball are removed by clean
+	if [ ! -f .defs.c ] ; then cp defs.c .defs.c || true ; fi
+	if [ ! -f .scan.c ] ; then cp scan.c .scan.c || true ; fi
+	$(MAKE) clean
+	if [ -f .defs.c ] ; then mv .defs.c defs.c ; fi
+	if [ -f .scan.c ] ; then mv .scan.c scan.c ; fi
+
+	dh_clean
+
+install: build
+	dh_testdir
+	dh_testroot
+	dh_prep
+	dh_installdirs
+	dh_install
+	cp Pre_Processors/dpp $D/usr/games/dealer.dpp
+	rm $D/usr/share/doc/dealer/Examples/.cvsignore
+	find $D -name .svn -type d | xargs rm -rf
+
+# Build architecture-independent files here.
+binary-indep:
+
+# Build architecture-dependent files here.
+binary binary-arch: install
+	dh_testdir
+	dh_testroot
+	dh_installchangelogs
+	dh_installdocs
+	dh_installman dealer*.6
+	dh_strip
+	dh_compress
+	dh_fixperms
+	dh_shlibdeps
+	dh_installdeb
+	dh_gencontrol
+	dh_md5sums
+	dh_builddeb
+
+.PHONY: build build-indep build-arch clean binary-indep binary-arch binary install configure
