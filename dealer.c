@@ -737,8 +737,8 @@ void predeal (int player, card onecard) {
       fullpack[i] = NO_CARD;
       for (j = player * 13; j < (player + 1) * 13; j++)
         if (stacked_pack[j] == NO_CARD) {
-        stacked_pack[j] = onecard;
-        return;
+          stacked_pack[j] = onecard;
+          return;
         }
       yyerror ("More than 13 cards for one player");
     }
