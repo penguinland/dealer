@@ -5,9 +5,20 @@
 #include <string.h>
 #include <limits.h>
 
+#include "dealer.h"
+
 long seed = 0;
 int quiet = 0;
 char* input_file = 0;
+
+int verbose;
+struct context c;
+struct handstat hs[4];
+deal curdeal;
+int maxgenerate;
+int maxdealer;
+int maxvuln;
+int will_print;
 
 #ifdef _MSC_VER
   /* with VC++6, winsock2 declares ntohs and struct timeval */

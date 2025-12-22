@@ -13,6 +13,8 @@
 #include "tree.h"
 #include "dealer.h"
 
+int yylex();
+
 void  yyerror (char*);
 void  setshapebit (int, int, int, int, int, int);
 void  predeal (int, card);
@@ -31,6 +33,8 @@ int shapeno ;
 
 struct tree *var_lookup(char *s, int mustbethere) ;
 struct action *newaction(int type, struct tree * p1, char * s1, int, struct tree * ) ;
+
+int d2n(char s[4]);
 struct tree *newtree (int, struct tree*, struct tree*, int, int);
 struct expr  *newexpr(struct tree* tr1, char* ch1, struct expr* ex1);
 void bias_deal(int suit, int compass, int length) ;
@@ -465,8 +469,8 @@ int perm[24][4] = {
 };
 
 int shapeno;
-void insertshape(s, any, neg_shape)
-char s[4];
+void insertshape(char s[4], int any, int neg_shape)
+//char s[4];
 {
         int i,j,p;
         int xcount=0, ccount=0;
@@ -579,8 +583,8 @@ char *s;
         return cs;
 }
 
-void predeal_holding(compass, holding)
-char *holding;
+void predeal_holding(int compass, char *holding)
+//char *holding;
 {
         char suit;
 
