@@ -867,7 +867,7 @@ int shuffle (deal d) {
        other card. This is supposed to be the perfect shuffle algorithm. 
        It only depends on a valid random number generator.  */
     for (i = 0; i < 52; i++) {
-      if (stacked_pack[i] == NO_CARD) { 
+      if (stacked_pack[i] == NO_CARD) {
         /* Thorvald Aagaard 14.08.1999 don't switch a predealt card */
         do {
           do {
