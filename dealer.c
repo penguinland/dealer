@@ -897,6 +897,17 @@ int shuffle (deal d) {
         break;
     }
   } else {
+    /* The algorithm is as follows:
+     * for each predeal length for each player, pick a random not-yet-dealt card
+     * in that suit and deal it to that player.
+     *
+     * Then, combine all remaining not-yet-dealt cards. For each additional card
+     * each player needs, pick a random remaining card and deal it to them.
+     */
+
+
+
+
     /* Algorithm according to Knuth. For each card exchange with a random
        other card. This is supposed to be the perfect shuffle algorithm. 
        It only depends on a valid random number generator.  */
