@@ -82,6 +82,8 @@ char lcrep[] = "23456789tjqka";
 char ucrep[] = "23456789TJQKA";
 #define representation (uppercase ? ucrep : lcrep );
 
+// biasdeal holds all the lengths specified from `predeal suit(player) == N`
+// lines. The first index is the compass direction, the second is the suit.
 int biasdeal[4][4] = { {-1, -1, -1, -1}, {-1, -1, -1, -1},
                        {-1, -1, -1, -1}, {-1, -1, -1, -1}};
 
@@ -726,7 +728,9 @@ void printdeal (deal d) {
 }
 
 void setup_deal () {
-  register int i, j;
+  register int i, j, k;
+  int card;
+  int suit_counts[4];
 
   j = 0;
   for (i = 0; i < 52; i++) {
@@ -739,6 +743,23 @@ void setup_deal () {
       assert (j <= 52);
     }
   }
+
+  // Any predealt cards should already be included in the predealt lengths, and
+  // should not be dealt again.
+  for (i = 0; i < 4; ++i) {  // For each player
+    suit_counts = {0, 0, 0, 0};
+    for (j = 0; j < 13; ++j) {  // For each card in player i's hand
+      card = curdeal[i * 13 + j];
+      if card != NO_CARD {
+        suit_counts[C_SUIT(card)] += 1;
+      }
+    }
+    for (k = 0; k < 4; ++k) {
+      if biasdeal[i][k] >= 0 {
+        biasdeal[i][k] -= suit_counts[k];
+        assert biasdeal[i][k] >= 0;
+      }
+    }
 }
 
 void predeal (int player, card onecard) {
