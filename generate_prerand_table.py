@@ -10,7 +10,7 @@ file for details.
 def make_list(i):
     vals = ["{:3}".format(x % i) for x in range(1024)]
     for i in range(1024 % i):
-        vals[-(i+1)] = " HI"
+        vals[-(i+1)] = " NC"
     return vals
 
 
