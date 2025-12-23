@@ -864,8 +864,11 @@ FILE * find_library (const char *basename, const char *openopt) {
 }
 
 int shuffle (deal d) {
-  int i, j, k;
+  int i, j, k, start, index;
   card t;
+  deal remaining_cards;
+  int remaining_count[4];  // one for each suit
+  int cards_dealt[4];  // one for each player
 
   if (loading) {
     static FILE *lib = 0;
@@ -928,25 +931,81 @@ int shuffle (deal d) {
      * Then, combine all remaining not-yet-dealt cards. For each additional card
      * each player needs, pick a random remaining card and deal it to them.
      */
+    for (i = 0; i < 4; ++i) {
+      remaining_count[i] = undealt_cards[i];
+      cards_dealt[i] = cards_in_hand[i];
+    }
 
-
-
-
-    /* Algorithm according to Knuth. For each card exchange with a random
-       other card. This is supposed to be the perfect shuffle algorithm. 
-       It only depends on a valid random number generator.  */
-    for (i = 0; i < 52; i++) {
-      if (stacked_pack[i] == NO_CARD) {
-        /* Thorvald Aagaard 14.08.1999 don't switch a predealt card */
-        do {
-          j = fast_randint(52);
-        } while (stacked_pack[j] != NO_CARD);
-
-        t = d[j];
-        d[j] = d[i];
-        d[i] = t;
+    for (i = 0; i < 4; ++i) {  // For each player
+      for (j = 0; j < 4; ++j) {  // For each suit
+        for (k = 0; k < biasdeal[i][j]; ++k) {  // Predeal the required cards
+          index = fast_randint(remaining_count[j]);
+          d[13*i+cards_dealt[i]] = card_pack[i][index];
+          cards_dealt[i] += 1;
+          remaining_count[i] -= 1;
+          // Move the dealt card to the end of the list
+          t = card_pack[i][index];
+          card_pack[i][index] = card_pack[i][remaining_count[i]];
+          card_pack[i][remaining_count[i]] = t;
+        }
       }
     }
+
+    k = 0;
+    for (i = 0; i < 4; ++i) {  // For each suit
+      for (j = 0; j < remaining_count[i]; ++j) {
+        remaining_cards[k] = card_pack[i][j];
+        k += 1;
+      }
+    }
+    // k is now the number of cards we still need to deal.
+
+    // Deal the rest of the cards
+    for (i = 0; i < 4; ++i) {  // For each player
+      start = 0;
+      j = cards_dealt[i];
+      while (j < 13) {  // For each card they still need
+        index = fast_randint(k - start);
+        if (biasdeal[i][C_SUIT(remaining_cards[start + index])] >= 0) {
+          // We already predealt this suit to this player. Set the card aside
+          // and try again.
+          t = remaining_cards[start + index];
+          remaining_cards[start + index] = remaining_cards[start];
+          remaining_cards[start] = t;
+          start += 1;
+        } else {
+          // Deal this card to this player.
+          d[13*i + j] = remaining_cards[start + index];
+          j += 1;
+          k -= 1;
+          t = remaining_cards[k];
+          remaining_cards[k] = remaining_cards[start + index];
+          remaining_cards[start + index] = t;
+        }
+      }
+    }
+    assert(k == 0);
+
+
+
+
+
+
+    ///* Algorithm according to Knuth. For each card exchange with a random
+    //   other card. This is supposed to be the perfect shuffle algorithm. 
+    //   It only depends on a valid random number generator.  */
+    //for (i = 0; i < 52; i++) {
+    //  if (stacked_pack[i] == NO_CARD) {
+    //    /* Thorvald Aagaard 14.08.1999 don't switch a predealt card */
+    //    do {
+    //      j = fast_randint(52);
+    //    } while (stacked_pack[j] != NO_CARD);
+
+    //    t = d[j];
+    //    d[j] = d[i];
+    //    d[i] = t;
+    //  }
+    //}
   }
   if (swapping) {
     ++swapindex;
