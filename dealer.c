@@ -963,6 +963,15 @@ int shuffle (deal d) {
     // k is now the number of cards we still need to deal.
     printf("computed k as %d\n", k);
 
+
+    // NO!! This won't work. Example problem: predeal 12 clubs to player 0 and
+    // predeal 4 diamonds, 4 hearts, and 4 spades to player 3. Then, randomly
+    // deal 27 other cards to the first 3 players so there is 1 undealt card and
+    // player 3 needs 1 more card dealt to them. We know that the final club
+    // must be dealt to the last player because we predealt every other suit to
+    // them, but it is unlikely that the final club is available to be given to
+    // that last player.
+
     // Deal the rest of the cards
     for (i = 0; i < 4; ++i) {  // For each player
       printf("dealing the rest of cards for player %d\n", i);
