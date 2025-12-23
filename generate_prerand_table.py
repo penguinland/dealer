@@ -7,6 +7,7 @@ edited further to include some documentation and a helper function. See that
 file for details.
 """
 
+
 def make_list(i):
     vals = ["{:3}".format(x % i) for x in range(1024)]
     for i in range(1024 % i):
@@ -22,6 +23,7 @@ def print_list(i):
         # The [1:] at the end removes the leading space at the beginning
         print("    {},  // {:02X}".format((",".join(l[16*j:16*(j+1)])[1:]), j))
     print("")
+
 
 if __name__ == "__main__":
     for i in range(52):
