@@ -92,6 +92,10 @@ int imparr[24] = { 10,   40,   80,  120,  160,  210,  260,  310,  360,
 deal fullpack;
 deal stacked_pack;
 
+// card_pack contains all 52 cards, sorted by suit. Within a suit, predealt
+// cards get moved to the end of the list, and the count of remaining cards is
+// in undealt_cards. Similarly, cards_in_hand increments every time a card is
+// predealt to a specific person.
 card card_pack[4][13] = {};
 int undealt_cards[4] = {13, 13, 13, 13};
 int cards_in_hand[4] = {0, 0, 0, 0};
@@ -752,6 +756,7 @@ void predeal (int player, card onecard) {
           t = card_pack[suit][i];
           card_pack[suit][i] = card_pack[suit][undealt_cards_in_suit];
           card_pack[suit][undealt_cards_in_suit] = t;
+          cards_in_hand[player] += 1
           j = 1;
           break;
       }
