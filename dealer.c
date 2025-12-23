@@ -739,9 +739,11 @@ void setup_deal () {
 
 void predeal (int player, card onecard) {
   int i, j;
+
   card t;
   int suit = C_SUIT(onecard);
   int undealt_cards_in_suit = undealt_cards[suit];
+  j = 0;  // For this first part, j is a boolean signifying whether we succeded.
   for (i = 0; i < undealt_cards_in_suit; i++) {
       if (card_pack[suit][i] == onecard) {
           // Move this card to the end and decrement the number of cards dealt
@@ -750,13 +752,14 @@ void predeal (int player, card onecard) {
           t = card_pack[suit][i];
           card_pack[suit][i] = card_pack[suit][undealt_cards_in_suit];
           card_pack[suit][undealt_cards_in_suit] = t;
+          j = 1;
           break;
       }
   }
-  if (i > undealt_cards[suit]) {
+  if (j == 0) {
       yyerror ("never found card to predeal!?");
   }
-  undealt_cards[suit] -= 1;
+  undealt_cards[suit] -= 1;  // Otherwise, one more card is predealt
 
   for (i = 0; i < 52; i++) {
     if (fullpack[i] == onecard) {
