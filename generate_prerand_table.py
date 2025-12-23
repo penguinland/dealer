@@ -20,7 +20,7 @@ def print_list(i):
     print("    //   1   2   3   4   5   6   7   8   9   A   B   C   D   E   F")
     for j in range(1024 // 16):
         # The [1:] at the end removes the leading space at the beginning
-        print("    {}  // {:02X}".format((",".join(l[16*j:16*(j+1)])[1:]), j))
+        print("    {},  // {:02X}".format((",".join(l[16*j:16*(j+1)])[1:]), j))
     print("")
 
 if __name__ == "__main__":
