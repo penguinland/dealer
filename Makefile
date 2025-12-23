@@ -9,12 +9,12 @@ PROGRAM  = dealer
 TARFILE  = ${PROGRAM}.tar
 GZIPFILE = ${PROGRAM}.tar.gz
 
-SRC  = dealer.c pbn.c  c4.c getopt.c pointcount.c
+SRC  = dealer.c pbn.c  c4.c getopt.c pointcount.c prerand.c
 LSRC = scan.l
 YSRC = defs.y
-HDR  = dealer.h tree.h
+HDR  = dealer.h tree.h prerand.h
 
-OBJ  = dealer.o defs.o pbn.o c4.o getopt.o pointcount.o
+OBJ  = dealer.o defs.o pbn.o c4.o getopt.o pointcount.o prerand.o
 LOBJ = scan.c
 YOBJ = defs.c
 MAN  = dealer.6 dealer.dpp.6
@@ -78,3 +78,4 @@ defs.o:	tree.h
 c4.o: c4.c  c4.h
 getopt.o: getopt.h
 pointcount.o: pointcount.h
+prerand.o: prerand.c prerand.h
