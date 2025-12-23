@@ -92,6 +92,11 @@ int imparr[24] = { 10,   40,   80,  120,  160,  210,  260,  310,  360,
 deal fullpack;
 deal stacked_pack;
 
+card card_pack[4][13] = {};
+int undealt_cards[4] = {13, 13, 13, 13};
+int cards_in_hand[4] = {0, 0, 0, 0};
+
+
 int swapping = 0;
 int swapindex = 0;
 int loading = 0;
@@ -873,15 +878,7 @@ int shuffle (deal d) {
       if (stacked_pack[i] == NO_CARD) {
         /* Thorvald Aagaard 14.08.1999 don't switch a predealt card */
         do {
-          do {
-#ifdef STD_RAND
-             k = RANDOM ();
-#else
-             /* Upper bits most random */
-             k = (RANDOM () >> (31 - RANDBITS));
-#endif /* STD_RAND */
-             j = zero52[k & NRANDMASK];
-           } while (j == 0xFF);
+          j = fast_randint(52);
         } while (stacked_pack[j] != NO_CARD);
 
         t = d[j];
@@ -1645,6 +1642,13 @@ int main (int argc, char **argv) {
   newpack (fullpack);
   /* Empty pack */
   for (i = 0; i < 52; i++) stacked_pack[i] = NO_CARD;
+  /* Set up individual suits */
+  for (i = 0; i < 13; i++) {
+      card_pack[SUIT_CLUB]   [i] = MAKECARD(SUIT_CLUB,    i);
+      card_pack[SUIT_DIAMOND][i] = MAKECARD(SUIT_DIAMOND, i);
+      card_pack[SUIT_HEART]  [i] = MAKECARD(SUIT_HEART,   i);
+      card_pack[SUIT_SPADE]  [i] = MAKECARD(SUIT_SPADE,   i);
+  }
   initdistr ();
   maxdealer = -1;
   maxvuln = -1;
