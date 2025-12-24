@@ -27,7 +27,7 @@ clean:
 	rm -f ${OBJ}
 	${MAKE} -C Examples clean
 	${MAKE} -C Random   clean
-	rm -f dealer
+	rm -f ${PROGRAM}
 
 tarclean: clean
 	rm -f ${TARFILE} ${GZIPFILE}
