@@ -211,7 +211,7 @@ DEFUN(__initstate, (seed, arg_state, n),
   PTR ostate = (PTR) &state[-1];
 
   if (rand_type == TYPE_0)
-    state[-1] = rand_type;
+    state[-1] = rand_type;  // No rptr to multiplex
   else
     state[-1] = (MAX_TYPES * (rptr - state)) + rand_type;
   if (n < BREAK_1)
@@ -257,6 +257,9 @@ DEFUN(__initstate, (seed, arg_state, n),
   if (rand_type == TYPE_0)
     state[-1] = rand_type;
   else
+    // QUESTION: isn't rptr still pointing to the old state, which could be very
+    // far away from the new state? How does (rptr - state) do the right thing,
+    // rather than being nonsensical?
     state[-1] = (MAX_TYPES * (rptr - state)) + rand_type;
 
   return ostate;
