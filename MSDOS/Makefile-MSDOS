@@ -24,7 +24,7 @@ dealer: ${OBJ} ${LOBJ} ${YOBJ}
 	$(CC) -o $@ ${OBJ} -L./Random -lgnurand
 
 clean:
-	rm -f ${OBJ} 
+	rm -f ${OBJ}
 	${MAKE} -C Examples clean
 	${MAKE} -C Random   clean
 	rm -f dealer
@@ -60,12 +60,12 @@ test: dealer
 .c.o:
 	${CC} ${CFLAGS} -o $@ $<
 
-# 
+#
 # File dependencies
 #
 scan.c: scan.l
 defs.c: scan.c defs.y
-dealer.o: tree.h scan.l dealer.h defs.c scan.c 
+dealer.o: tree.h scan.l dealer.h defs.c scan.c
 pbn.o: tree.h scan.l dealer.h
 defs.o:	tree.h
 c4.o: c4.c  c4.h
