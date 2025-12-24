@@ -21,10 +21,10 @@ YOBJ = defs.c
 
 
 dealer: ${OBJ} ${LOBJ} ${YOBJ}
-	$(CC) -o $@ ${OBJ} 
+	$(CC) -o $@ ${OBJ}
 	
 clean:
-	rm -f ${OBJ} ${LOBJ} ${YOBJ} 
+	rm -f ${OBJ} ${LOBJ} ${YOBJ}
 	${MAKE} -C Examples clean
 	rm -f ${PROGRAM}
 
@@ -38,7 +38,7 @@ tarfile: tarclean
 	cd .. ; \
 		rm ${TARFILE} ; \
 		tar cvf ${TARFILE} dealer ; \
-		mv ${TARFILE} dealer 
+		mv ${TARFILE} dealer
 	# Run a new command starting in this current directory again to gzip it.
 	gzip -f ${TARFILE}
 
@@ -64,12 +64,12 @@ test: dealer
 .c.o:
 	${CC} ${CFLAGS} -o $@ $<
 
-# 
+#
 # File dependencies
 #
 scan.c: scan.l
 defs.c: scan.c defs.y
-dealer.o: tree.h scan.l dealer.h defs.c scan.c 
+dealer.o: tree.h scan.l dealer.h defs.c scan.c
 pbn.o: tree.h scan.l dealer.h
 defs.o:	tree.h
 c4.o: c4.c  c4.h
