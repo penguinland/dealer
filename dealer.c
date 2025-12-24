@@ -6,7 +6,7 @@
 #include <limits.h>
 
 #include "dealer.h"
-#include "prerand.h"
+#include "fast_randint.h"
 
 long seed = 0;
 int quiet = 0;

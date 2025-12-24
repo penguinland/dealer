@@ -2,9 +2,9 @@
 """
 This code was made by Alan Davidson <alan.davidson@gmail.com> on Dec 22, 2025.
 
-This script generates the precomputed table in prerand.c. That file was then
-edited further to include some documentation and a helper function. See that
-file for details.
+This script generates the precomputed table in fast_randint.c. That file was
+then edited further to include some documentation and a helper function. See
+that file for details.
 """
 
 

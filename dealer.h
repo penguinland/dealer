@@ -27,6 +27,7 @@ extern struct context c;
 #endif /* STD_RAND */
 
 #include "pointcount.h"
+#include "tree.h"
 
 struct handstat {
     int hs_length[NSUITS];      /* distribution */
