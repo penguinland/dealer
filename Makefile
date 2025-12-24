@@ -1,7 +1,7 @@
 # $Header: /home/henk/CVS/dealer/Makefile,v 1.15 1999/08/05 19:57:44 henk Exp $
 
 CC      = gcc
-CFLAGS = -Wall -pedantic -I. -DNDEBUG -c
+CFLAGS = -Wall -pedantic -O2 -I. -DNDEBUG -c
 FLEX    = flex
 YACC    = yacc
 # Note: this should be the Berkeley Yacc, sometimes called byacc
@@ -26,10 +26,10 @@ dealer: ${OBJ} ${LOBJ} ${YOBJ}
 clean:
 	rm -f ${OBJ} ${LOBJ} ${YOBJ} 
 	${MAKE} -C Examples clean
+	rm -f ${PROGRAM}
 
 tarclean: clean ${YOBJ}
-	rm -f ${PROGRAM}
-	rm -f ${TARFILE}  ${GZIPFILE}
+	rm -f ${TARFILE} ${GZIPFILE}
 
 tarfile: tarclean
 	cd .. ; \
