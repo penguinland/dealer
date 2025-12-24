@@ -168,7 +168,7 @@ static int rand_deg = DEG_3;
 static int rand_sep = SEP_3;
 
 static long int *end_ptr = &randtbl[sizeof(randtbl) / sizeof(randtbl[0])];
-
+
 /* Initialize the random number generator based on the given seed.  If the
    type is the trivial no-state-information type, just remember the seed.
    Otherwise, initializes state[] based on the given "seed" via a linear
@@ -192,7 +192,7 @@ DEFUN(__srandom, (x), unsigned int x)
 	(void) __random();
     }
 }
-
+
 /* Initialize the state information in the given array of N bytes for
    future random number generation.  Based on the number of bytes we
    are given, and the break values for the different R.N.G.'s, we choose
@@ -261,7 +261,7 @@ DEFUN(__initstate, (seed, arg_state, n),
 
   return ostate;
 }
-
+
 /* Restore the state from the given state array.
    Note: It is important that we also remember the locations of the pointers
    in the current state information, and restore the locations of the pointers
@@ -311,7 +311,7 @@ DEFUN(__setstate, (arg_state), PTR arg_state)
 
   return ostate;
 }
-
+
 /* If we are using the trivial TYPE_0 R.N.G., just do the old linear
    congruential bit.  Otherwise, we do our fancy trinomial stuff, which is the
    same in all ther other cases due to all the global variables that have been
