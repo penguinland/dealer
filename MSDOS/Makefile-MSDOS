@@ -27,15 +27,15 @@ clean:
 	rm -f ${OBJ} 
 	${MAKE} -C Examples clean
 	${MAKE} -C Random   clean
+	rm -f dealer
 
 tarclean: clean
-	rm -f dealer
-	rm -f ${TARFILE}  ${GZIPFILE}
+	rm -f ${TARFILE} ${GZIPFILE}
 
 tarfile: tarclean
 	cd .. ; \
-	tar cvf ${TARFILE} ${PROGRAM} --exclude CVS --exclude ${TARFILE}; \
-	mv ${TARFILE} ${PROGRAM} 
+		tar cvf ${TARFILE} dealer --exclude CVS --exclude ${TARFILE}; \
+		mv ${TARFILE} dealer
 	gzip -f ${TARFILE}
 
 test: dealer
