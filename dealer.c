@@ -45,6 +45,16 @@ char* input_file = 0;
 #include "c4.h"
 #include "pbn.h"
 
+// Define the global variables declared in dealer.h
+int verbose;
+struct context c;
+struct handstat hs[4];
+deal curdeal;
+int maxgenerate;
+int maxdealer;
+int maxvuln;
+int will_print;
+
 void yyerror (char *);
 
 #define TWO_TO_THE_13 (1<<13)
