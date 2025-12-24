@@ -33,12 +33,12 @@ tarclean: clean ${YOBJ}
 
 tarfile: tarclean
 	# Go up a directory, delete dealer.tar, zip the dealer/ directory into
-	# dealer.tar, then move that program into this directory again. Note that
+	# dealer.tar, then move that file into this directory again. Note that
 	# this won't work if the current directory is not named dealer/
 	cd .. ; \
-		rm ${TARFILE} ${GZIPFILE} ; \
-		tar cvf ${TARFILE} ${PROGRAM} ; \
-		mv ${TARFILE} ${PROGRAM} 
+		rm ${TARFILE} ; \
+		tar cvf ${TARFILE} dealer ; \
+		mv ${TARFILE} dealer 
 	# Run a new command starting in this current directory again to gzip it.
 	gzip -f ${TARFILE}
 
