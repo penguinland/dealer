@@ -1,7 +1,7 @@
 # $Header: /home/henk/CVS/dealer/Makefile,v 1.15 1999/08/05 19:57:44 henk Exp $
 
 CC      = gcc
-CFLAGS = -Wall -pedantic -I. -DNDEBUG -c
+CFLAGS = -Wall -pedantic -O2 -I. -DNDEBUG -c
 FLEX    = flex
 YACC    = yacc
 # Note: this should be the Berkeley Yacc, sometimes called byacc
@@ -21,21 +21,25 @@ YOBJ = defs.c
 
 
 dealer: ${OBJ} ${LOBJ} ${YOBJ}
-	$(CC) -o $@ ${OBJ} 
+	$(CC) -o $@ ${OBJ}
 	
 clean:
-	rm -f ${OBJ} ${LOBJ} ${YOBJ} 
+	rm -f ${OBJ} ${LOBJ} ${YOBJ}
 	${MAKE} -C Examples clean
+	rm -f ${PROGRAM}
 
 tarclean: clean ${YOBJ}
-	rm -f ${PROGRAM}
-	rm -f ${TARFILE}  ${GZIPFILE}
+	rm -f ${TARFILE} ${GZIPFILE}
 
 tarfile: tarclean
+	# Go up a directory, delete dealer.tar, zip the dealer/ directory into
+	# dealer.tar, then move that file into this directory again. Note that
+	# this won't work if the current directory is not named dealer/
 	cd .. ; \
-        rm ${TARFILE} ${GZIPFILE} ; \
-	tar cvf ${TARFILE} ${PROGRAM} ; \
-	mv ${TARFILE} ${PROGRAM} 
+		rm ${TARFILE} ; \
+		tar cvf ${TARFILE} dealer ; \
+		mv ${TARFILE} dealer
+	# Run a new command starting in this current directory again to gzip it.
 	gzip -f ${TARFILE}
 
 test: dealer
@@ -60,12 +64,12 @@ test: dealer
 .c.o:
 	${CC} ${CFLAGS} -o $@ $<
 
-# 
+#
 # File dependencies
 #
 scan.c: scan.l
 defs.c: scan.c defs.y
-dealer.o: tree.h scan.l dealer.h defs.c scan.c 
+dealer.o: tree.h scan.l dealer.h defs.c scan.c
 pbn.o: tree.h scan.l dealer.h
 defs.o:	tree.h
 c4.o: c4.c  c4.h

@@ -30,7 +30,7 @@
 #include <limits.h>
 #include <stddef.h>
 /*
-#include <stdlib.h>  
+#include <stdlib.h>
 */
 
 long int DEFUN_VOID(__random);
@@ -168,7 +168,7 @@ static int rand_deg = DEG_3;
 static int rand_sep = SEP_3;
 
 static long int *end_ptr = &randtbl[sizeof(randtbl) / sizeof(randtbl[0])];
-
+
 /* Initialize the random number generator based on the given seed.  If the
    type is the trivial no-state-information type, just remember the seed.
    Otherwise, initializes state[] based on the given "seed" via a linear
@@ -185,14 +185,14 @@ DEFUN(__srandom, (x), unsigned int x)
     {
       register long int i;
       for (i = 1; i < rand_deg; ++i)
-	state[i] = (1103515145 * state[i - 1]) + 12345;
+        state[i] = (1103515145 * state[i - 1]) + 12345;
       fptr = &state[rand_sep];
       rptr = &state[0];
       for (i = 0; i < 10 * rand_deg; ++i)
-	(void) __random();
+        (void) __random();
     }
 }
-
+
 /* Initialize the state information in the given array of N bytes for
    future random number generation.  Based on the number of bytes we
    are given, and the break values for the different R.N.G.'s, we choose
@@ -211,16 +211,16 @@ DEFUN(__initstate, (seed, arg_state, n),
   PTR ostate = (PTR) &state[-1];
 
   if (rand_type == TYPE_0)
-    state[-1] = rand_type;
+    state[-1] = rand_type;  // No rptr to multiplex
   else
     state[-1] = (MAX_TYPES * (rptr - state)) + rand_type;
   if (n < BREAK_1)
     {
       if (n < BREAK_0)
-	{
-	  errno = EINVAL;
-	  return NULL;
-	}
+        {
+          errno = EINVAL;
+          return NULL;
+        }
       rand_type = TYPE_0;
       rand_deg = DEG_0;
       rand_sep = SEP_0;
@@ -257,11 +257,14 @@ DEFUN(__initstate, (seed, arg_state, n),
   if (rand_type == TYPE_0)
     state[-1] = rand_type;
   else
+    // QUESTION: isn't rptr still pointing to the old state, which could be very
+    // far away from the new state? How does (rptr - state) do the right thing,
+    // rather than being nonsensical?
     state[-1] = (MAX_TYPES * (rptr - state)) + rand_type;
 
   return ostate;
 }
-
+
 /* Restore the state from the given state array.
    Note: It is important that we also remember the locations of the pointers
    in the current state information, and restore the locations of the pointers
@@ -311,10 +314,10 @@ DEFUN(__setstate, (arg_state), PTR arg_state)
 
   return ostate;
 }
-
+
 /* If we are using the trivial TYPE_0 R.N.G., just do the old linear
    congruential bit.  Otherwise, we do our fancy trinomial stuff, which is the
-   same in all ther other cases due to all the global variables that have been
+   same in all the other cases due to all the global variables that have been
    set up.  The basic operation is to add the number at the rear pointer into
    the one at the front pointer.  Then both pointers are advanced to the next
    location cyclically in the table.  The value returned is the sum generated,
@@ -323,8 +326,8 @@ DEFUN(__setstate, (arg_state), PTR arg_state)
    rear pointers can't wrap on the same call by not testing the rear
    pointer if the front one has wrapped.  Returns a 31-bit random number.  */
 
-long int DEFUN_VOID(__random)  
-/* long int random(void) */  
+long int DEFUN_VOID(__random)
+/* long int random(void) */
 /* Use this one if your system complains about the DEFUN_VOID statement */
 {
   if (rand_type == TYPE_0)
@@ -340,16 +343,16 @@ long int DEFUN_VOID(__random)
       i = (*fptr >> 1) & LONG_MAX;
       ++fptr;
       if (fptr >= end_ptr)
-	{
-	  fptr = state;
-	  ++rptr;
-	}
+        {
+          fptr = state;
+          ++rptr;
+        }
       else
-	{
-	  ++rptr;
-	  if (rptr >= end_ptr)
-	    rptr = state;
-	}
+        {
+          ++rptr;
+          if (rptr >= end_ptr)
+            rptr = state;
+        }
       return i;
     }
 }
