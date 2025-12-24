@@ -924,7 +924,6 @@ int shuffle (deal d) {
         break;
     }
   } else {
-    printf("top of shuffling algo...\n");
     /* The algorithm is as follows:
      * for each predeal length for each player, pick a random not-yet-dealt card
      * in that suit and deal it to that player.
@@ -951,7 +950,6 @@ int shuffle (deal d) {
         }
       }
     }
-    printf("finished predealing lengths...\n");
 
     k = 0;
     for (i = 0; i < 4; ++i) {  // For each suit
@@ -961,17 +959,12 @@ int shuffle (deal d) {
       }
     }
     // k is now the number of cards we still need to deal.
-    printf("computed k as %d\n", k);
 
     // Deal the rest of the cards
     for (i = 0; i < 4; ++i) {  // For each player
-      printf("dealing the rest of cards for player %d\n", i);
       j = cards_dealt[i];
       while (j < 13) {  // For each card they still need
-        printf("%d cards remain...\n", k);
         index = fast_randint(k);
-        printf("considering index %d for card %d for player %d...\n", index, j, i);
-        printf("dealing card %d to player %d...\n", j, i);
         // Deal this card to this player.
         d[13*i + j] = remaining_cards[index];
         j += 1;
@@ -981,9 +974,7 @@ int shuffle (deal d) {
         remaining_cards[index] = t;
       }
     }
-    printf("finished predealing rest...\n");
     assert(k == 0);
-    printf("assertion passed!\n");
 
 
 
