@@ -941,13 +941,13 @@ int shuffle (deal d) {
       for (j = 0; j < 4; ++j) {  // For each suit
         for (k = 0; k < biasdeal[i][j]; ++k) {  // Predeal the required cards
           index = fast_randint(remaining_count[j]);
-          d[13*i+cards_dealt[i]] = card_pack[i][index];
+          d[13*i+cards_dealt[i]] = card_pack[j][index];
           cards_dealt[i] += 1;
-          remaining_count[i] -= 1;
+          remaining_count[j] -= 1;
           // Move the dealt card to the end of the list
           t = card_pack[i][index];
-          card_pack[i][index] = card_pack[i][remaining_count[i]];
-          card_pack[i][remaining_count[i]] = t;
+          card_pack[i][index] = card_pack[i][remaining_count[j]];
+          card_pack[i][remaining_count[j]] = t;
         }
       }
     }
