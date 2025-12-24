@@ -2,8 +2,10 @@
 # Makefile to process all Descr.* files with dealer and write the output
 # to Output.*.  make test executes the test, make clean cleans up.
 # Depending on the CPU power that you have, these test may take up to
-# 30 minutes to run.
+# 10 minutes to run.
 #
+
+DEALER = ../dealer
 
 SHELL=/bin/sh
 
@@ -12,7 +14,7 @@ OUTPUT = $(wildcard Output.*)
 test: examples distribution 
 
 distribution:
-	../dealer -s 1 <Test.distribution | ./convert.pl >Output.distribution	
+	${DEALER} -s 1 <Test.distribution | ./convert.pl >Output.distribution	
 	diff Output.distribution Refer.distribution
 
 examples:

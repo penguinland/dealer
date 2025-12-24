@@ -1,7 +1,7 @@
 SRC      = $(wildcard *.c) 
 OBJ      = $(subst .c,.o,$(wildcard *.c)) 
 GCC      = gcc
-GCCFLAGS = -c -Wall -O2 -I. $(shell dpkg-buildflags --get CFLAGS)
+GCCFLAGS = -c -Wall -O2 -I.
 HDR      = ansidecl.h
 LIB      = libgnurand.a
 AR       = ar
