@@ -864,7 +864,7 @@ FILE * find_library (const char *basename, const char *openopt) {
 }
 
 int shuffle (deal d) {
-  int i, j, k, start, index;
+  int i, j, k, index;
   card t;
   deal remaining_cards;
   int remaining_count[4];  // one for each suit
@@ -963,42 +963,22 @@ int shuffle (deal d) {
     // k is now the number of cards we still need to deal.
     printf("computed k as %d\n", k);
 
-
-    // NO!! This won't work. Example problem: predeal 12 clubs to player 0 and
-    // predeal 4 diamonds, 4 hearts, and 4 spades to player 3. Then, randomly
-    // deal 27 other cards to the first 3 players so there is 1 undealt card and
-    // player 3 needs 1 more card dealt to them. We know that the final club
-    // must be dealt to the last player because we predealt every other suit to
-    // them, but it is unlikely that the final club is available to be given to
-    // that last player.
-
     // Deal the rest of the cards
     for (i = 0; i < 4; ++i) {  // For each player
       printf("dealing the rest of cards for player %d\n", i);
-      start = 0;
       j = cards_dealt[i];
       while (j < 13) {  // For each card they still need
         printf("%d cards remain...\n", k);
-        index = fast_randint(k - start);
-        printf("considering index %d at start %d for card %d for player %d...\n", index, start, j, i);
-        if (biasdeal[i][C_SUIT(remaining_cards[start + index])] >= 0) {
-          printf("skipping card for player %d...\n", i);
-          // We already predealt this suit to this player. Set the card aside
-          // and try again.
-          t = remaining_cards[start + index];
-          remaining_cards[start + index] = remaining_cards[start];
-          remaining_cards[start] = t;
-          start += 1;
-        } else {
-          printf("dealing card %d to player %d...\n", j, i);
-          // Deal this card to this player.
-          d[13*i + j] = remaining_cards[start + index];
-          j += 1;
-          k -= 1;
-          t = remaining_cards[k];
-          remaining_cards[k] = remaining_cards[start + index];
-          remaining_cards[start + index] = t;
-        }
+        index = fast_randint(k);
+        printf("considering index %d for card %d for player %d...\n", index, j, i);
+        printf("dealing card %d to player %d...\n", j, i);
+        // Deal this card to this player.
+        d[13*i + j] = remaining_cards[index];
+        j += 1;
+        k -= 1;
+        t = remaining_cards[k];
+        remaining_cards[k] = remaining_cards[index];
+        remaining_cards[index] = t;
       }
     }
     printf("finished predealing rest...\n");
