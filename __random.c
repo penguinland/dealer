@@ -185,11 +185,11 @@ DEFUN(__srandom, (x), unsigned int x)
     {
       register long int i;
       for (i = 1; i < rand_deg; ++i)
-	state[i] = (1103515145 * state[i - 1]) + 12345;
+        state[i] = (1103515145 * state[i - 1]) + 12345;
       fptr = &state[rand_sep];
       rptr = &state[0];
       for (i = 0; i < 10 * rand_deg; ++i)
-	(void) __random();
+        (void) __random();
     }
 }
 
@@ -217,10 +217,10 @@ DEFUN(__initstate, (seed, arg_state, n),
   if (n < BREAK_1)
     {
       if (n < BREAK_0)
-	{
-	  errno = EINVAL;
-	  return NULL;
-	}
+        {
+          errno = EINVAL;
+          return NULL;
+        }
       rand_type = TYPE_0;
       rand_deg = DEG_0;
       rand_sep = SEP_0;
@@ -340,16 +340,16 @@ long int DEFUN_VOID(__random)
       i = (*fptr >> 1) & LONG_MAX;
       ++fptr;
       if (fptr >= end_ptr)
-	{
-	  fptr = state;
-	  ++rptr;
-	}
+        {
+          fptr = state;
+          ++rptr;
+        }
       else
-	{
-	  ++rptr;
-	  if (rptr >= end_ptr)
-	    rptr = state;
-	}
+        {
+          ++rptr;
+          if (rptr >= end_ptr)
+            rptr = state;
+        }
       return i;
     }
 }
