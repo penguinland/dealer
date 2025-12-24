@@ -103,12 +103,13 @@ denote.
        two other players.
        <p>
        An alternate form of predeal specification is
-       <A HREF="#suit"><b>(suit)(player)==1</b></A> (for example:
-       <b>"spades(north)==1"</b> and
+       <A HREF="#suit"><b>(suit)(player)>=7</b></A> (for example:
+       <b>"spades(north)>=7"</b> and
        variants thereof for different suits, compass positions, numbers); this
-       will ensure that (player) gets exactly the number of spades specified,
-       (in this case, one), but that spade can be any card (except for the
-       ones predealt to other players).
+       will ensure that (player) gets at least the number of spades specified,
+       (in this case, seven), but those spades can be any cards (except for the
+       ones predealt to other players). More spades might also be randomly dealt
+       to this player in addition.
 
        <b>predeal (player),(card)</b>
        will just force the program to give these cards to this player,
