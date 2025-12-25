@@ -975,27 +975,6 @@ int shuffle (deal d) {
       }
     }
     assert(k == 0);
-
-
-
-
-
-
-    ///* Algorithm according to Knuth. For each card exchange with a random
-    //   other card. This is supposed to be the perfect shuffle algorithm. 
-    //   It only depends on a valid random number generator.  */
-    //for (i = 0; i < 52; i++) {
-    //  if (stacked_pack[i] == NO_CARD) {
-    //    /* Thorvald Aagaard 14.08.1999 don't switch a predealt card */
-    //    do {
-    //      j = fast_randint(52);
-    //    } while (stacked_pack[j] != NO_CARD);
-
-    //    t = d[j];
-    //    d[j] = d[i];
-    //    d[i] = t;
-    //  }
-    //}
   }
   if (swapping) {
     ++swapindex;
