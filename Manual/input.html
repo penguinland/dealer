@@ -125,6 +125,10 @@ denote.
        it is more likely that at least 1 will be dealt to this player than none.
        This syntax is intended for finding example deals that fit the
        requirement, not for finding statistically likely deals that fit it.
+       However, if you predeal some minimum length to a player and then in the
+       condition require they have exactly that length of the suit, then the
+       probability distributions work out correctly again. That's the main use
+       for this syntax: setting up unusually long holdings of a suit.
        <p>
        Note that <b>predeal</b> is not compatible with a command-line switch
        of "-l", and only makes much sense for hands that are <b>not</b>
