@@ -639,7 +639,6 @@ void predeal_holding(compass, holding)
 int compass;
 char *holding;
 {
-printf("predeal_holding %s %s\n", player_name[compass], holding);
         char suit;
 
         suit = *holding++;
@@ -674,10 +673,7 @@ int bias_totsuit(int suit){
 }
 
 void bias_deal(int suit, int compass, int length){
-  printf("in bias_deal: suit %s, compass %s, len %d\n",
-         suit_name[suit], player_name[compass], length);
   if(biasdeal[compass][suit]!=-1){
-    printf("can't bias same holding twice!?\n");
     char s[256];
     sprintf(s,"%s's %s suit has length already set to %d",
       player_name[compass],suit_name[suit],
@@ -686,14 +682,12 @@ void bias_deal(int suit, int compass, int length){
   }
   biasdeal[compass][suit]=length;
   if(bias_len(compass)>13){
-    printf("predealt more than 13 cards to 1 player!?\n");
       char s[256];
     sprintf(s,"Suit lengths too long for %s",
       player_name[compass]);
     yyerror(s);
   }
   if(bias_totsuit(suit)>13){
-    printf("predealt more than 13 cards from 1 suit!?\n");
     char s[256];
     sprintf(s,"Too many %ss",suit_name[suit]);
     yyerror(s);
