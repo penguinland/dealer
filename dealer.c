@@ -917,9 +917,9 @@ int shuffle (deal d) {
           cards_dealt[i] += 1;
           remaining_count[j] -= 1;
           // Move the dealt card to the end of the list
-          t = card_pack[i][index];
-          card_pack[i][index] = card_pack[i][remaining_count[j]];
-          card_pack[i][remaining_count[j]] = t;
+          t = card_pack[j][index];
+          card_pack[j][index] = card_pack[j][remaining_count[j]];
+          card_pack[j][remaining_count[j]] = t;
         }
       }
     }
