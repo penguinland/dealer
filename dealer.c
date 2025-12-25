@@ -126,7 +126,6 @@ struct tree defaulttree = {TRT_NUMBER, NIL, NIL, 1, 0};
 struct tree *decisiontree = &defaulttree;
 struct action defaultaction = {(struct action *) 0, ACT_PRINTALL};
 struct action *actionlist = &defaultaction;
-unsigned char zero52[NRANDVALS];
 deal *deallist;
 
 /* Function definitions */
@@ -805,33 +804,7 @@ void predeal (int player, card onecard) {
 }
 
 void initprogram () {
-  int i, i_cycle;
-  int val;
-
-  /* Now initialize array zero52 with numbers 0..51 repeatedly. This whole
-     charade is just to prevent having to do divisions. */
-  val = 0;
-  for (i = 0, i_cycle = 0; i < NRANDVALS; i++) {
-    while (stacked_pack[val] != NO_CARD) {
-      /* this slot is predealt, do not use it */
-      val++;
-      if (val == 52) {
-        val = 0;
-        i_cycle = i;
-      }
-    }
-    zero52[i] = val++;
-    if (val == 52) {
-      val = 0;
-      i_cycle = i + 1;
-    }
-  }
-  /* Fill the last part of the array with 0xFF, just to prevent
-     that 0 occurs more than 51. This is probably just for hack value */
-  while (i > i_cycle) {
-    zero52[i - 1] = 0xFF;
-    i--;
-  }
+  // Nothing here for now, maybe put things in later.
 }
 
 void swap2 (deal d, int p1, int p2) {
