@@ -1572,7 +1572,7 @@ int main (int argc, char **argv) {
 
   gettimeofday (&tvstart, (void *) 0);
 
-  while ((c = getopt (argc, argv, "023ehuvmqp:g:s:l:V")) != -1) {
+  while ((c = getopt (argc, argv, "023ehuvmqp:g:s:l:V")) != (char)EOF) {
     switch (c) {
       case '0':
       case '2':
