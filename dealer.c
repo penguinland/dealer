@@ -101,6 +101,10 @@ deal stacked_pack;
 card card_pack[4][13] = {};
 int undealt_cards[4] = {13, 13, 13, 13};
 int cards_in_hand[4] = {0, 0, 0, 0};
+// predealt_card_count is indexed by compass direction, then by suit, just like
+// biasdeal.
+int predealt_card_count[4][4] = { {0, 0, 0, 0}, {0, 0, 0, 0},
+                                  {0, 0, 0, 0}, {0, 0, 0, 0}};
 
 
 int swapping = 0;
@@ -728,9 +732,6 @@ void printdeal (deal d) {
 
 void setup_deal () {
   register int i, j, k;
-  card onecard;
-  int suit_counts[4];
-
   j = 0;
   for (i = 0; i < 52; i++) {
     if (stacked_pack[i] != NO_CARD) {
@@ -740,26 +741,6 @@ void setup_deal () {
         j++;
       curdeal[i] = fullpack[j++];
       assert (j <= 52);
-    }
-  }
-
-  // Any predealt cards should already be included in the predealt lengths, and
-  // should not be dealt again.
-  for (i = 0; i < 4; ++i) {  // For each player
-    for (j = 0; j < 4; ++j) {  // Reset all suit counts to 0
-      suit_counts[j] = 0;
-    }
-    for (j = 0; j < 13; ++j) {  // For each card in player i's hand
-      onecard = curdeal[i * 13 + j];
-      if (onecard != NO_CARD) {
-        suit_counts[C_SUIT(onecard)] += 1;  // Count all predealt cards by suit
-      }
-    }
-    for (k = 0; k < 4; ++k) {
-      if (biasdeal[i][k] >= 0) {
-        biasdeal[i][k] -= suit_counts[k];
-        assert (biasdeal[i][k] >= 0);
-      }
     }
   }
 }
@@ -780,6 +761,7 @@ void predeal (int player, card onecard) {
           card_pack[suit][i] = card_pack[suit][undealt_cards_in_suit];
           card_pack[suit][undealt_cards_in_suit] = t;
           cards_in_hand[player] += 1;
+          predealt_card_count[player][suit] += 1;
           j = 1;
           break;
       }
@@ -911,7 +893,10 @@ int shuffle (deal d) {
 
     for (i = 0; i < 4; ++i) {  // For each player
       for (j = 0; j < 4; ++j) {  // For each suit
-        for (k = 0; k < biasdeal[i][j]; ++k) {  // Predeal the required cards
+        // Predeal the remaining required cards. Note that if biasdeal[i][j] is
+        // set to -1 (not set), k will definitely be negative and the entire for
+        // loop will be skipped.
+        for (k = 0; k < biasdeal[i][j] - predealt_card_count[i][j]; ++k) {
           index = fast_randint(remaining_count[j]);
           d[13*i+cards_dealt[i]] = card_pack[j][index];
           cards_dealt[i] += 1;
