@@ -94,7 +94,7 @@ int imparr[24] = { 10,   40,   80,  120,  160,  210,  260,  310,  360,
 deal fullpack;
 deal stacked_pack;
 
-// card_pack contains all 52 cards, sorted by suit. Within a suit, predealt
+// card_pack contains all 52 cards, split up by suit. Within a suit, predealt
 // cards get moved to the end of the list, and the count of remaining cards is
 // in undealt_cards. Similarly, cards_in_hand increments every time a card is
 // predealt to a specific person.
@@ -731,7 +731,8 @@ void printdeal (deal d) {
 }
 
 void setup_deal () {
-  register int i, j, k;
+  register int i, j;
+
   j = 0;
   for (i = 0; i < 52; i++) {
     if (stacked_pack[i] != NO_CARD) {
