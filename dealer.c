@@ -921,12 +921,11 @@ int shuffle (deal d) {
 
     // Deal the rest of the cards
     for (i = 0; i < 4; ++i) {  // For each player
-      j = cards_dealt[i];
-      while (j < 13) {  // For each card they still need
+      for (j = cards_dealt[i]; j < 13; ++j) {  // For each card they still need
         index = fast_randint(k);
         // Deal this card to this player.
         d[13*i + j] = remaining_cards[index];
-        j += 1;
+        // Move the dealt card to the end of the list
         k -= 1;
         t = remaining_cards[k];
         remaining_cards[k] = remaining_cards[index];
