@@ -183,7 +183,7 @@ predealargs
 
 predealarg
         :  COMPASS { predeal_compass = $1;} holdings
-        |  SUIT '(' COMPASS ')' CMPGE NUMBER {bias_deal($1,$3,$6);}
+        |  SUIT '(' COMPASS ')' CMPEQ NUMBER {bias_deal($1,$3,$6);}
         ;
 
 holdings
