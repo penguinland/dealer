@@ -1318,13 +1318,6 @@ int evaltree (struct tree *t) {
   }
 }
 
-/* This is a macro to replace the original code :
-int interesting () {
-  return evaltree (decisiontree) && right_predeal_lengths();
-}
-*/
-#define interesting() ((int)evaltree(decisiontree) && right_predeal_lengths())
-
 // Returns whether all hands match up with all set values in biasdeal
 int right_predeal_lengths() {
   int i, j;
@@ -1337,6 +1330,13 @@ int right_predeal_lengths() {
   }
   return 1;
 }
+
+/* This is a macro to replace the original code :
+int interesting () {
+  return evaltree (decisiontree) && right_predeal_lengths();
+}
+*/
+#define interesting() ((int)evaltree(decisiontree) && right_predeal_lengths())
 
 void setup_action () {
   struct action *acp;
