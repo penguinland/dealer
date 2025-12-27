@@ -106,7 +106,6 @@ int cards_in_hand[4] = {0, 0, 0, 0};
 int predealt_card_count[4][4] = { {0, 0, 0, 0}, {0, 0, 0, 0},
                                   {0, 0, 0, 0}, {0, 0, 0, 0}};
 
-
 int swapping = 0;
 int swapindex = 0;
 int loading = 0;
