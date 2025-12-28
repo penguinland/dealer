@@ -924,11 +924,13 @@ int shuffle (deal d) {
         index = fast_randint(k);
         // Deal this card to this player.
         d[13*i + j] = remaining_cards[index];
-        // Move the dealt card to the end of the list
+        // Logically, we should move the dealt card to the end of the list.
+        // However, we don't care if we destroy the end of the list, because it
+        // will never be used again, and we never need to deal this card again
+        // either. So, just overwrite the dealt card with the card that had been
+        // at the end of the list.
         k -= 1;
-        t = remaining_cards[k];
-        remaining_cards[k] = remaining_cards[index];
-        remaining_cards[index] = t;
+        remaining_cards[index] = remaining_cards[k];
       }
     }
     assert(k == 0);
