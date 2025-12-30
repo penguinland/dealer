@@ -1,20 +1,20 @@
-Clubs held by W: 4.37588
+Clubs held by W: 4.37809
 Frequency Number of clubs:
     0	       0
     1	       0
-    2	    4232
-    3	   17029
-    4	   34577
-    5	   28734
-    6	   12338
-    7	    2715
-    8	     350
-    9	      24
+    2	    4246
+    3	   17032
+    4	   34339
+    5	   29008
+    6	   12242
+    7	    2710
+    8	     405
+    9	      17
    10	       1
    11	       0
    12	       0
    13	       0
-Generated 718495 hands
+Generated 718710 hands
 Produced 100000 hands
 Initial random seed 1
-Time needed    0.700 sec
+Time needed    0.264 sec

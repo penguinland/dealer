@@ -5,129 +5,26 @@ North hands:
 
 
    1.               
-- 
-A 8 5 4 
-J T 8 3 2 
-A K 3 2 
+K 8 6 4 
+J 6 
+Q 4 3 
+A J 8 4 
 
-Losers: 6
-S : 0
+Losers: 8
+S : 2
 H : 2
-D : 3
-C : 1
-HCP: 12
-S : 0
-H : 4
-D : 1
-C : 7
-Control: 5
-S : 0
-H : 2
-D : 0
-C : 3
-
-
-North hands:
-
-
-
-   1.               
-- 
-A 8 5 4 
-J T 8 3 2 
-A K 3 2 
-
-C4: 1540
-S : 0
-H : 160
-D : 100
-C : 280
-tens: 1
-S : 0
-H : 0
-D : 1
-C : 0
-jacks: 1
-S : 0
-H : 0
-D : 1
-C : 0
-
-
-North hands:
-
-
-
-   1.               
-- 
-A 8 5 4 
-J T 8 3 2 
-A K 3 2 
-
-queens: 0
-S : 0
-H : 0
-D : 0
-C : 0
-kings: 1
-S : 0
-H : 0
-D : 0
-C : 1
-aces: 2
-S : 0
-H : 1
-D : 0
-C : 1
-
-
-North hands:
-
-
-
-   1.               
-- 
-A 8 5 4 
-J T 8 3 2 
-A K 3 2 
-
-top2: 3
-S : 0
-H : 1
-D : 0
-C : 2
-top3: 3
-S : 0
-H : 1
-D : 0
-C : 2
-top4: 4
-S : 0
-H : 1
-D : 1
-C : 2
-
-
-North hands:
-
-
-
-   1.               
-- 
-A 8 5 4 
-J T 8 3 2 
-A K 3 2 
-
-top5: 5
-S : 0
-H : 1
 D : 2
 C : 2
-c13: 17
-S : 0
-H : 6
-D : 1
-C : 10
+HCP: 11
+S : 3
+H : 1
+D : 2
+C : 5
+Control: 3
+S : 1
+H : 0
+D : 0
+C : 2
 
 
 North hands:
@@ -135,12 +32,115 @@ North hands:
 
 
    1.               
-- 
-A 8 5 4 
-J T 8 3 2 
-A K 3 2 
+K 8 6 4 
+J 6 
+Q 4 3 
+A J 8 4 
+
+C4: 1000
+S : 120
+H : 20
+D : 60
+C : 200
+tens: 0
+S : 0
+H : 0
+D : 0
+C : 0
+jacks: 2
+S : 0
+H : 1
+D : 0
+C : 1
+
+
+North hands:
+
+
+
+   1.               
+K 8 6 4 
+J 6 
+Q 4 3 
+A J 8 4 
+
+queens: 1
+S : 0
+H : 0
+D : 1
+C : 0
+kings: 1
+S : 1
+H : 0
+D : 0
+C : 0
+aces: 1
+S : 0
+H : 0
+D : 0
+C : 1
+
+
+North hands:
+
+
+
+   1.               
+K 8 6 4 
+J 6 
+Q 4 3 
+A J 8 4 
+
+top2: 2
+S : 1
+H : 0
+D : 0
+C : 1
+top3: 3
+S : 1
+H : 0
+D : 1
+C : 1
+top4: 5
+S : 1
+H : 1
+D : 1
+C : 2
+
+
+North hands:
+
+
+
+   1.               
+K 8 6 4 
+J 6 
+Q 4 3 
+A J 8 4 
+
+top5: 5
+S : 1
+H : 1
+D : 1
+C : 2
+c13: 14
+S : 4
+H : 1
+D : 2
+C : 7
+
+
+North hands:
+
+
+
+   1.               
+K 8 6 4 
+J 6 
+Q 4 3 
+A J 8 4 
 
 Generated 1 hands
 Produced 1 hands
 Initial random seed 6
-Time needed    0.001 sec
+Time needed    0.000 sec
