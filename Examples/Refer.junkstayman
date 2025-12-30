@@ -1,9 +1,9 @@
-4450,7d: 0.04
-4450,8d: 0.32
-4450,8M: 0.64
+4450,7d: 0.0714286
+4450,8d: 0.464286
+4450,8M: 0.464286
 Frequency :
-    0	       9
-    1	      16
+    0	      15
+    1	      13
 Frequency :
     0	       0
     1	       0
@@ -12,14 +12,14 @@ Frequency :
     4	       0
     5	       0
     6	       0
-    7	       5
-    8	      13
-    9	       7
-   10	       0
+    7	       8
+    8	      12
+    9	       4
+   10	       4
    11	       0
    12	       0
    13	       0
 Generated 1000000 hands
-Produced 25 hands
+Produced 28 hands
 Initial random seed 8
-Time needed    1.403 sec
+Time needed    0.446 sec
