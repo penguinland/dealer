@@ -5,6 +5,9 @@
 #include <string.h>
 #include <limits.h>
 
+#include "dealer.h"
+#include "fast_randint.h"
+
 long seed = 0;
 int quiet = 0;
 char* input_file = 0;
@@ -79,6 +82,8 @@ char lcrep[] = "23456789tjqka";
 char ucrep[] = "23456789TJQKA";
 #define representation (uppercase ? ucrep : lcrep );
 
+// biasdeal holds all the lengths specified from `predeal suit(player) == N`
+// lines. The first index is the compass direction, the second is the suit.
 int biasdeal[4][4] = { {-1, -1, -1, -1}, {-1, -1, -1, -1},
                        {-1, -1, -1, -1}, {-1, -1, -1, -1}};
 
@@ -88,6 +93,18 @@ int imparr[24] = { 10,   40,   80,  120,  160,  210,  260,  310,  360,
 
 deal fullpack;
 deal stacked_pack;
+
+// card_pack contains all 52 cards, split up by suit. Within a suit, predealt
+// cards get moved to the end of the list, and the count of remaining cards is
+// in undealt_cards. Similarly, cards_in_hand increments every time a card is
+// predealt to a specific person.
+card card_pack[4][13] = {};
+int undealt_cards[4] = {13, 13, 13, 13};
+int cards_in_hand[4] = {0, 0, 0, 0};
+// predealt_card_count is indexed by compass direction, then by suit, just like
+// biasdeal.
+int predealt_card_count[4][4] = { {0, 0, 0, 0}, {0, 0, 0, 0},
+                                  {0, 0, 0, 0}, {0, 0, 0, 0}};
 
 int swapping = 0;
 int swapindex = 0;
@@ -112,7 +129,6 @@ struct tree defaulttree = {TRT_NUMBER, NIL, NIL, 1, 0};
 struct tree *decisiontree = &defaulttree;
 struct action defaultaction = {(struct action *) 0, ACT_PRINTALL};
 struct action *actionlist = &defaultaction;
-unsigned char zero52[NRANDVALS];
 deal *deallist;
 
 /* Function definitions */
@@ -732,13 +748,36 @@ void setup_deal () {
 void predeal (int player, card onecard) {
   int i, j;
 
+  card t;
+  int suit = C_SUIT(onecard);
+  int undealt_cards_in_suit = undealt_cards[suit];
+  j = 0;  // For this first part, j is a boolean signifying whether we succeded.
+  for (i = 0; i < undealt_cards_in_suit; i++) {
+      if (card_pack[suit][i] == onecard) {
+          // Move this card to the end and decrement the number of cards dealt
+          // in the suit. The cards remaining at the front are the undealt ones.
+          undealt_cards_in_suit -= 1;
+          t = card_pack[suit][i];
+          card_pack[suit][i] = card_pack[suit][undealt_cards_in_suit];
+          card_pack[suit][undealt_cards_in_suit] = t;
+          cards_in_hand[player] += 1;
+          predealt_card_count[player][suit] += 1;
+          j = 1;
+          break;
+      }
+  }
+  if (j == 0) {
+      yyerror ("never found card to predeal!?");
+  }
+  undealt_cards[suit] -= 1;  // Otherwise, one more card is predealt
+
   for (i = 0; i < 52; i++) {
     if (fullpack[i] == onecard) {
       fullpack[i] = NO_CARD;
       for (j = player * 13; j < (player + 1) * 13; j++)
         if (stacked_pack[j] == NO_CARD) {
-        stacked_pack[j] = onecard;
-        return;
+          stacked_pack[j] = onecard;
+          return;
         }
       yyerror ("More than 13 cards for one player");
     }
@@ -747,33 +786,7 @@ void predeal (int player, card onecard) {
 }
 
 void initprogram () {
-  int i, i_cycle;
-  int val;
-
-  /* Now initialize array zero52 with numbers 0..51 repeatedly. This whole
-     charade is just to prevent having to do divisions. */
-  val = 0;
-  for (i = 0, i_cycle = 0; i < NRANDVALS; i++) {
-    while (stacked_pack[val] != NO_CARD) {
-      /* this slot is predealt, do not use it */
-      val++;
-      if (val == 52) {
-        val = 0;
-        i_cycle = i;
-      }
-    }
-    zero52[i] = val++;
-    if (val == 52) {
-      val = 0;
-      i_cycle = i + 1;
-    }
-  }
-  /* Fill the last part of the array with 0xFF, just to prevent
-     that 0 occurs more than 51. This is probably just for hack value */
-  while (i > i_cycle) {
-    zero52[i - 1] = 0xFF;
-    i--;
-  }
+  // Nothing here for now, maybe put things in later.
 }
 
 void swap2 (deal d, int p1, int p2) {
@@ -806,8 +819,11 @@ FILE * find_library (const char *basename, const char *openopt) {
 }
 
 int shuffle (deal d) {
-  int i, j, k;
+  int i, j, k, index;
   card t;
+  deal remaining_cards;
+  int remaining_count[4];  // one for each suit
+  int cards_dealt[4];  // one for each player
 
   if (loading) {
     static FILE *lib = 0;
@@ -863,29 +879,61 @@ int shuffle (deal d) {
         break;
     }
   } else {
-    /* Algorithm according to Knuth. For each card exchange with a random
-       other card. This is supposed to be the perfect shuffle algorithm. 
-       It only depends on a valid random number generator.  */
-    for (i = 0; i < 52; i++) {
-      if (stacked_pack[i] == NO_CARD) { 
-        /* Thorvald Aagaard 14.08.1999 don't switch a predealt card */
-        do {
-          do {
-#ifdef STD_RAND
-             k = RANDOM ();
-#else
-             /* Upper bits most random */
-             k = (RANDOM () >> (31 - RANDBITS));
-#endif /* STD_RAND */
-             j = zero52[k & NRANDMASK];
-           } while (j == 0xFF);
-        } while (stacked_pack[j] != NO_CARD);
+    /* The algorithm is as follows:
+     * for each predeal length for each player, pick a random not-yet-dealt card
+     * in that suit and deal it to that player.
+     *
+     * Then, combine all remaining not-yet-dealt cards. For each additional card
+     * each player needs, pick a random remaining card and deal it to them.
+     */
+    for (i = 0; i < 4; ++i) {
+      remaining_count[i] = undealt_cards[i];
+      cards_dealt[i] = cards_in_hand[i];
+    }
 
-        t = d[j];
-        d[j] = d[i];
-        d[i] = t;
+    for (i = 0; i < 4; ++i) {  // For each player
+      for (j = 0; j < 4; ++j) {  // For each suit
+        // Predeal the remaining required cards. Note that if biasdeal[i][j] is
+        // set to -1 (not set), k will definitely be negative and the entire for
+        // loop will be skipped.
+        for (k = 0; k < biasdeal[i][j] - predealt_card_count[i][j]; ++k) {
+          index = fast_randint(remaining_count[j]);
+          d[13*i+cards_dealt[i]] = card_pack[j][index];
+          cards_dealt[i] += 1;
+          remaining_count[j] -= 1;
+          // Move the dealt card to the end of the list
+          t = card_pack[j][index];
+          card_pack[j][index] = card_pack[j][remaining_count[j]];
+          card_pack[j][remaining_count[j]] = t;
+        }
       }
     }
+
+    k = 0;
+    for (i = 0; i < 4; ++i) {  // For each suit
+      for (j = 0; j < remaining_count[i]; ++j) {
+        remaining_cards[k] = card_pack[i][j];
+        k += 1;
+      }
+    }
+    // k is now the number of cards we still need to deal.
+
+    // Deal the rest of the cards
+    for (i = 0; i < 4; ++i) {  // For each player
+      for (j = cards_dealt[i]; j < 13; ++j) {  // For each card they still need
+        index = fast_randint(k);
+        // Deal this card to this player.
+        d[13*i + j] = remaining_cards[index];
+        // Logically, we should move the dealt card to the end of the list.
+        // However, we don't care if we destroy the end of the list, because it
+        // will never be used again, and we never need to deal this card again
+        // either. So, just overwrite the dealt card with the card that had been
+        // at the end of the list.
+        k -= 1;
+        remaining_cards[index] = remaining_cards[k];
+      }
+    }
+    assert(k == 0);
   }
   if (swapping) {
     ++swapindex;
@@ -1271,12 +1319,25 @@ int evaltree (struct tree *t) {
   }
 }
 
+// Returns whether all hands match up with all set values in biasdeal
+int right_predeal_lengths() {
+  int i, j;
+  for (i = 0; i < 4; ++i) {
+    for (j = 0; j < 4; ++j) {
+      if (biasdeal[i][j] >= 0 && biasdeal[i][j] != hs[i].hs_length[j]) {
+        return 0;
+      }
+    }
+  }
+  return 1;
+}
+
 /* This is a macro to replace the original code :
 int interesting () {
-  return evaltree (decisiontree);
+  return evaltree (decisiontree) && right_predeal_lengths();
 }
 */
-#define interesting() ((int)evaltree(decisiontree))
+#define interesting() ((int)evaltree(decisiontree) && right_predeal_lengths())
 
 void setup_action () {
   struct action *acp;
@@ -1642,6 +1703,13 @@ int main (int argc, char **argv) {
   newpack (fullpack);
   /* Empty pack */
   for (i = 0; i < 52; i++) stacked_pack[i] = NO_CARD;
+  /* Set up individual suits */
+  for (i = 0; i < 13; i++) {
+      card_pack[SUIT_CLUB]   [i] = MAKECARD(SUIT_CLUB,    i);
+      card_pack[SUIT_DIAMOND][i] = MAKECARD(SUIT_DIAMOND, i);
+      card_pack[SUIT_HEART]  [i] = MAKECARD(SUIT_HEART,   i);
+      card_pack[SUIT_SPADE]  [i] = MAKECARD(SUIT_SPADE,   i);
+  }
   initdistr ();
   maxdealer = -1;
   maxvuln = -1;
