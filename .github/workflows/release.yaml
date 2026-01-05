@@ -47,7 +47,7 @@ jobs:
             artifact_name: dealer-macos-arm64
           - os: macos
             arch: amd64
-            runner: macos-13
+            runner: macos-latest
             artifact_name: dealer-macos-amd64
     steps:
       - name: Check out code
