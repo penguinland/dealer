@@ -60,21 +60,14 @@ jobs:
       - name: Check out code
         uses: actions/checkout@v4
 
-      - name: Debugging 1
+      - name: Package source code
         run: |
           pwd
           ls -lah
           cd ..
-          pwd
           ls -lah
-
-      - name: Debugging 2
-        run: |
-          pwd
-          ls -lah
-          cd ..
-          pwd
-          ls -lah
+          zip source_code dealer
+          mv source_code.zip dealer
 
       - name: Upload artifact
         uses: actions/upload-artifact@v6
