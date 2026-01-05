@@ -63,10 +63,16 @@ jobs:
       - name: Build the executable - Windows
         if: matrix.os == 'windows'
         # Blindly copied from ChatGPT, no idea if this is idiomatic
+        shell: msys2 {0}
         run: |
           export PATH="/mingw64/bin:$PATH"
           make
           strip dealer.exe
+
+      - name: Zip the executable - Windows
+        if: matrix.os == 'windows'
+        # Blindly copied from ChatGPT, no idea if this is idiomatic
+        run: |
           Compress-Archive -Path dealer.exe \
                            -DestinationPath ${{ matrix.artifact_name }}.zip
 
