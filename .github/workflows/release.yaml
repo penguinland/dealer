@@ -1,0 +1,105 @@
+name: Build and Release
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build-linux:
+    name: Build on Linux
+    runs-on: ${{ matrix.runner }}
+    strategy:
+      matrix:
+        include:
+          - os: linux
+            arch: arm64
+            runner: ubuntu-latest
+            artifact_name: dealer-linux-arm64
+          - os: linux
+            arch: amd64
+            runner: ubuntu-latest
+            artifact_name: dealer-linux-amd64
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+      - name: Set up build environment
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gcc flex yacc make
+      - name: Build the executable
+        run: |
+          make
+          zip ${{ matrix.artifact_name }} dealer
+      - name: Upload artifact
+        uses: actions/upload-artifact@v6
+        with:
+          name: ${{ matrix.artifact_name }}.zip
+          path: ${{ matrix.artifact_name }}.zip
+
+  build-mac:
+    name: Build on Mac
+    runs-on: ${{ matrix.runner }}
+    strategy:
+      matrix:
+        include:
+          - os: macos
+            arch: arm64
+            runner: macos-latest
+            artifact_name: dealer-macos-arm64
+          - os: macos
+            arch: amd64
+            runner: macos-13
+            artifact_name: dealer-macos-amd64
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+      - name: Set up build environment
+        run: brew install gcc flex byacc make
+      - name: Build the executable
+        run: |
+          make
+          zip ${{ matrix.artifact_name }} dealer
+      - name: Upload artifact
+        uses: actions/upload-artifact@v6
+        with:
+          name: ${{ matrix.artifact_name }}.zip
+          path: ${{ matrix.artifact_name }}.zip
+
+#  build-windows:
+#    name: Build on Windows
+#    runs-on: ${{ matrix.runner }}
+#    strategy:
+#      matrix:
+#        include:
+#          - os: windows
+#            arch: amd64
+#            runner: windows-latest
+#            artifact_name: dealer-windows-amd64
+#    steps:
+#      - name: Check out code
+#        uses: actions/checkout@v4
+#
+#
+#
+#
+#      - name: Build (Windows)
+#        if: matrix.os == 'windows'
+#        run: |
+#          make
+#          move dealer.exe ${{ matrix.artifact_name }}
+
+
+  release:
+    name: Create Release
+    needs: [build-linux, build-mac]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download all artifacts
+        uses: actions/download-artifact@v7
+        with:
+          path: artifacts
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: artifacts/*/*
+          draft: true
+          prerelease: true
