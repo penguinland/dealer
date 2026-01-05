@@ -53,29 +53,6 @@ jobs:
           name: ${{ matrix.artifact_name }}.zip
           path: ${{ matrix.artifact_name }}.zip
 
-  source:
-    name: Package Source Code
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check out code
-        uses: actions/checkout@v4
-
-      - name: Package source code
-        run: |
-          pwd
-          ls -lah
-          cd ..
-          ls -lah
-          zip -r dealer-source-code dealer
-          mv dealer-source-code.zip dealer
-
-      - name: Upload artifact
-        uses: actions/upload-artifact@v6
-        with:
-          name: dealer-source-code.zip
-          path: dealer-source-code.zip
-
-
   release:
     name: Create Release
     needs: [build]
