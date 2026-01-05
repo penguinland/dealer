@@ -49,9 +49,9 @@ jobs:
           update: true
           install: >
             mingw-w64-x86_64-gcc
-            mingw-w64-x86_64-flex
-            mingw-w64-x86_64-bison
-            mingw-w64-x86_64-make
+            flex
+            bison
+            make
 
       - name: Build the executable - non-Windows
         if: matrix.os != 'windows'
@@ -62,10 +62,11 @@ jobs:
 
       - name: Build the executable - Windows
         if: matrix.os == 'windows'
+        # Blindly copied from ChatGPT, no idea if this is idiomatic
         run: |
+          export PATH="/mingw64/bin:$PATH"
           make
           strip dealer.exe
-          # Blindly copied from ChatGPT, no idea if this is idiomatic
           Compress-Archive -Path dealer.exe \
                            -DestinationPath ${{ matrix.artifact_name }}.zip
 
