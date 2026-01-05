@@ -15,23 +15,20 @@ closely enough for me to be comfortable with that thought.
 	Hans van Staveren
 	Amsterdam
 	Holland
-	<sater@sater.home.cs.vu.nl>
 
 ------------------------------------------------------------------------------
 This is a version of Hans' program with several new functions.   Please
 look in the Manual directory for a description.
 
-        Henk Uijterwaal
-        Amsterdam
-        Holland
-        henk@ripe.net
+The canonical location online to find the source code for this version is
+https://github.com/penguinland/dealer
 
 ------------------------------------------------------------------------------
 
 
 Notes:
 
-To build on MAC OS, replace the line
+To build with Francois' exhaustive mode, replace the line
 
     CFLAGS = -Wall -pedantic -O2 -I. -DNDEBUG -c
 
