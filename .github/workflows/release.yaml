@@ -90,4 +90,4 @@ jobs:
         with:
           files: artifacts/*/*
           draft: true
-          prerelease: true
+          prerelease: false
