@@ -66,14 +66,14 @@ jobs:
           ls -lah
           cd ..
           ls -lah
-          zip source_code dealer
-          mv source_code.zip dealer
+          zip -r dealer-source-code dealer
+          mv dealer-source-code.zip dealer
 
       - name: Upload artifact
         uses: actions/upload-artifact@v6
         with:
-          name: source_code.zip
-          path: source_code.zip
+          name: dealer-source-code.zip
+          path: dealer-source-code.zip
 
 
   release:
