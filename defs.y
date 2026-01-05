@@ -519,10 +519,7 @@ int perm[24][4] = {
 };
 
 int shapeno;
-void insertshape(s, any, neg_shape)
-char s[4];
-int any;
-int neg_shape;
+void insertshape(char s[4], int any, int neg_shape)
 {
         int i,j,p;
         int xcount=0, ccount=0;
@@ -569,10 +566,7 @@ int d2n(char s[4]) {
         return atoi(copys);
 }
 
-struct tree *newtree(type, p1, p2, i1, i2)
-int type;
-struct tree *p1, *p2;
-int i1,i2;
+struct tree *newtree(int type, struct tree* p1, struct tree* p2, int i1, int i2)
 {
         /* char *mycalloc(); */
         struct tree *p;
@@ -586,12 +580,7 @@ int i1,i2;
         return p;
 }
 
-struct action *newaction(type, p1, s1, i1, p2)
-int type;
-struct tree *p1;
-char *s1;
-int i1;
-struct tree *p2;
+struct action *newaction(int type, struct tree* p1, char* s1, int i1, struct tree* p2)
 {
         /* char *mycalloc(); */
         struct action *a;
@@ -624,8 +613,7 @@ struct expr *newexpr(struct tree* tr1, char* ch1, struct expr* ex1)
     }
 }
 
-char *mystrcpy(s)
-char *s;
+char *mystrcpy(char* s)
 {
         char *cs;
         /* char *mycalloc(); */
@@ -635,9 +623,7 @@ char *s;
         return cs;
 }
 
-void predeal_holding(compass, holding)
-int compass;
-char *holding;
+void predeal_holding(int compass, char* holding)
 {
         char suit;
 
