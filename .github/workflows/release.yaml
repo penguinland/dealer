@@ -4,8 +4,8 @@ on:
   workflow_dispatch:
 
 jobs:
-  build-linux:
-    name: Build on Linux
+  build:
+    name: Build
     runs-on: ${{ matrix.runner }}
     strategy:
       matrix:
@@ -18,30 +18,6 @@ jobs:
             arch: amd64
             runner: ubuntu-latest
             artifact_name: dealer-linux-amd64
-    steps:
-      - name: Check out code
-        uses: actions/checkout@v4
-      - name: Set up build environment
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y gcc flex yacc make
-      - name: Build the executable
-        run: |
-          make
-          strip dealer
-          zip ${{ matrix.artifact_name }} dealer
-      - name: Upload artifact
-        uses: actions/upload-artifact@v6
-        with:
-          name: ${{ matrix.artifact_name }}.zip
-          path: ${{ matrix.artifact_name }}.zip
-
-  build-mac:
-    name: Build on Mac
-    runs-on: ${{ matrix.runner }}
-    strategy:
-      matrix:
-        include:
           - os: macos
             arch: arm64
             runner: macos-latest
@@ -50,16 +26,32 @@ jobs:
             arch: amd64
             runner: macos-latest
             artifact_name: dealer-macos-amd64
+#          - os: windows
+#            arch: amd64
+#            runner: windows-latest
+#            artifact_name: dealer-windows-amd64
+
     steps:
       - name: Check out code
         uses: actions/checkout@v4
-      - name: Set up build environment
+
+      - name: Set up build environment - Linux
+        if: matrix.os == 'linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gcc flex yacc make
+
+      - name: Set up build environment - Mac
+        if: matrix.os == 'macos'
         run: brew install gcc flex byacc make
+
       - name: Build the executable
+        if: matrix.os != 'windows'
         run: |
           make
           strip dealer
           zip ${{ matrix.artifact_name }} dealer
+
       - name: Upload artifact
         uses: actions/upload-artifact@v6
         with:
@@ -72,10 +64,6 @@ jobs:
 #    strategy:
 #      matrix:
 #        include:
-#          - os: windows
-#            arch: amd64
-#            runner: windows-latest
-#            artifact_name: dealer-windows-amd64
 #    steps:
 #      - name: Check out code
 #        uses: actions/checkout@v4
