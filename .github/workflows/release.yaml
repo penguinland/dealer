@@ -40,6 +40,19 @@ jobs:
         if: matrix.os == 'macos'
         run: brew install gcc flex byacc make
 
+      - name: Set up build environment - Windows
+        if: matrix.os == 'windows'
+        # Blindly copied from ChatGPT, no idea if this is idiomatic
+        uses: msys2/setup-msys2@v2
+        with:
+          msystem: MINGW64
+          update: true
+          install: >
+            mingw-w64-x86_64-gcc
+            mingw-w64-x86_64-flex
+            mingw-w64-x86_64-bison
+            mingw-w64-x86_64-make
+
       - name: Build the executable - non-Windows
         if: matrix.os != 'windows'
         run: |
@@ -52,7 +65,9 @@ jobs:
         run: |
           make
           strip dealer.exe
-          zip ${{ matrix.artifact_name }} dealer.exe
+          # Blindly copied from ChatGPT, no idea if this is idiomatic
+          Compress-Archive -Path dealer.exe \
+                           -DestinationPath ${{ matrix.artifact_name }}.zip
 
       - name: Upload artifact
         uses: actions/upload-artifact@v6
