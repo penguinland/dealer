@@ -58,6 +58,8 @@ int maxdealer;
 int maxvuln;
 int will_print;
 
+const char *player_name[] = { "North", "East", "South", "West" };
+
 void yyerror (char *);
 
 #define TWO_TO_THE_13 (1<<13)

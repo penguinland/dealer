@@ -638,7 +638,6 @@ void predeal_holding(int compass, char* holding)
 #define TRUNCZ(x) ((x)<0?0:(x))
 
 extern int biasdeal[4][4];
-extern char*player_name[4];
 static char *suit_name[] = {"Club", "Diamond", "Heart", "Spade"};
 
 
