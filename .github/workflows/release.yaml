@@ -4,93 +4,58 @@ on:
   workflow_dispatch:
 
 jobs:
-  build-linux:
-    name: Build on Linux
+  build:
+    name: Build
     runs-on: ${{ matrix.runner }}
     strategy:
       matrix:
         include:
           - os: linux
-            arch: arm64
-            runner: ubuntu-latest
+            runner: ubuntu-24.04-arm
             artifact_name: dealer-linux-arm64
           - os: linux
-            arch: amd64
             runner: ubuntu-latest
             artifact_name: dealer-linux-amd64
-    steps:
-      - name: Check out code
-        uses: actions/checkout@v4
-      - name: Set up build environment
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y gcc flex yacc make
-      - name: Build the executable
-        run: |
-          make
-          zip ${{ matrix.artifact_name }} dealer
-      - name: Upload artifact
-        uses: actions/upload-artifact@v6
-        with:
-          name: ${{ matrix.artifact_name }}.zip
-          path: ${{ matrix.artifact_name }}.zip
-
-  build-mac:
-    name: Build on Mac
-    runs-on: ${{ matrix.runner }}
-    strategy:
-      matrix:
-        include:
           - os: macos
-            arch: arm64
             runner: macos-latest
             artifact_name: dealer-macos-arm64
           - os: macos
-            arch: amd64
-            runner: macos-13
+            runner: macos-15-intel
             artifact_name: dealer-macos-amd64
+          # It is tempting to add Windows here, too, but you'll run into
+          # compilation errors because the code imports <netinet/in.h>, which is
+          # a POSIX-only thing. The Windows folks can try using WSL to run the
+          # Linux version instead.
+
     steps:
       - name: Check out code
         uses: actions/checkout@v4
-      - name: Set up build environment
+
+      - name: Set up build environment - Linux
+        if: matrix.os == 'linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gcc flex yacc make
+
+      - name: Set up build environment - Mac
+        if: matrix.os == 'macos'
         run: brew install gcc flex byacc make
+
       - name: Build the executable
         run: |
           make
+          strip dealer
           zip ${{ matrix.artifact_name }} dealer
+
       - name: Upload artifact
         uses: actions/upload-artifact@v6
         with:
           name: ${{ matrix.artifact_name }}.zip
           path: ${{ matrix.artifact_name }}.zip
 
-#  build-windows:
-#    name: Build on Windows
-#    runs-on: ${{ matrix.runner }}
-#    strategy:
-#      matrix:
-#        include:
-#          - os: windows
-#            arch: amd64
-#            runner: windows-latest
-#            artifact_name: dealer-windows-amd64
-#    steps:
-#      - name: Check out code
-#        uses: actions/checkout@v4
-#
-#
-#
-#
-#      - name: Build (Windows)
-#        if: matrix.os == 'windows'
-#        run: |
-#          make
-#          move dealer.exe ${{ matrix.artifact_name }}
-
-
   release:
     name: Create Release
-    needs: [build-linux, build-mac]
+    needs: [build]
     runs-on: ubuntu-latest
     steps:
       - name: Download all artifacts
@@ -102,4 +67,4 @@ jobs:
         with:
           files: artifacts/*/*
           draft: true
-          prerelease: true
+          prerelease: false
