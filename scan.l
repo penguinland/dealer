@@ -1,4 +1,6 @@
 /* $Header: /home/henk/CVS/dealer/scan.l,v 1.8 1999/07/05 19:44:30 henk Exp $ */
+%option noinput
+%option nounput
 %x COMMENT
 %%
 "&&"            return(AND2);
