@@ -22,9 +22,10 @@ jobs:
           - os: macos
             runner: macos-15-intel
             artifact_name: dealer-macos-amd64
-          - os: windows
-            runner: windows-latest
-            artifact_name: dealer-windows-amd64
+          # It is tempting to add Windows here, too, but you'll run into
+          # compilation errors because the code imports <netinet/in.h>, which is
+          # a POSIX-only thing. The Windows folks can try using WSL to run the
+          # Linux version instead.
 
     steps:
       - name: Check out code
@@ -40,47 +41,47 @@ jobs:
         if: matrix.os == 'macos'
         run: brew install gcc flex byacc make
 
-      - name: Set up build environment - Windows
-        if: matrix.os == 'windows'
-        # Blindly copied from ChatGPT, no idea if this is idiomatic
-        uses: msys2/setup-msys2@v2
-        with:
-          msystem: MINGW64
-          update: true
-          install: >
-            mingw-w64-x86_64-gcc
-            flex
-            bison
-            make
-
-      - name: Build the executable - non-Windows
-        if: matrix.os != 'windows'
+      - name: Build the executable
         run: |
           make
           strip dealer
           zip ${{ matrix.artifact_name }} dealer
-
-      - name: Build the executable - Windows
-        if: matrix.os == 'windows'
-        # Blindly copied from ChatGPT, no idea if this is idiomatic
-        shell: msys2 {0}
-        run: |
-          export PATH="/mingw64/bin:$PATH"
-          make
-          strip dealer.exe
-
-      - name: Zip the executable - Windows
-        if: matrix.os == 'windows'
-        # Blindly copied from ChatGPT, no idea if this is idiomatic
-        run: |
-          Compress-Archive -Path dealer.exe \
-                           -DestinationPath ${{ matrix.artifact_name }}.zip
 
       - name: Upload artifact
         uses: actions/upload-artifact@v6
         with:
           name: ${{ matrix.artifact_name }}.zip
           path: ${{ matrix.artifact_name }}.zip
+
+  source:
+    name: Package Source Code
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+
+      - name: Debugging 1
+        run: |
+          pwd
+          ls -lah
+          cd ..
+          pwd
+          ls -lah
+
+      - name: Debugging 2
+        run: |
+          pwd
+          ls -lah
+          cd ..
+          pwd
+          ls -lah
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v6
+        with:
+          name: source_code.zip
+          path: source_code.zip
+
 
   release:
     name: Create Release
