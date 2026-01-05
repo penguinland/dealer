@@ -28,6 +28,7 @@ jobs:
       - name: Build the executable
         run: |
           make
+          strip dealer
           zip ${{ matrix.artifact_name }} dealer
       - name: Upload artifact
         uses: actions/upload-artifact@v6
@@ -57,6 +58,7 @@ jobs:
       - name: Build the executable
         run: |
           make
+          strip dealer
           zip ${{ matrix.artifact_name }} dealer
       - name: Upload artifact
         uses: actions/upload-artifact@v6
