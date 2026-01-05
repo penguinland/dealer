@@ -53,7 +53,7 @@ jobs:
       - name: Check out code
         uses: actions/checkout@v4
       - name: Set up build environment
-        run: brew install gcc flex yacc make
+        run: brew install gcc flex byacc make
       - name: Build the executable
         run: |
           make
