@@ -11,25 +11,20 @@ jobs:
       matrix:
         include:
           - os: linux
-            arch: arm64
-            runner: ubuntu-latest
+            runner: ubuntu-24.04-arm
             artifact_name: dealer-linux-arm64
           - os: linux
-            arch: amd64
             runner: ubuntu-latest
             artifact_name: dealer-linux-amd64
           - os: macos
-            arch: arm64
             runner: macos-latest
             artifact_name: dealer-macos-arm64
           - os: macos
-            arch: amd64
-            runner: macos-latest
+            runner: macos-15-intel
             artifact_name: dealer-macos-amd64
-#          - os: windows
-#            arch: amd64
-#            runner: windows-latest
-#            artifact_name: dealer-windows-amd64
+          - os: windows
+            runner: windows-latest
+            artifact_name: dealer-windows-amd64
 
     steps:
       - name: Check out code
@@ -45,38 +40,25 @@ jobs:
         if: matrix.os == 'macos'
         run: brew install gcc flex byacc make
 
-      - name: Build the executable
+      - name: Build the executable - non-Windows
         if: matrix.os != 'windows'
         run: |
           make
           strip dealer
           zip ${{ matrix.artifact_name }} dealer
 
+      - name: Build the executable - Windows
+        if: matrix.os == 'windows'
+        run: |
+          make
+          strip dealer.exe
+          zip ${{ matrix.artifact_name }} dealer.exe
+
       - name: Upload artifact
         uses: actions/upload-artifact@v6
         with:
           name: ${{ matrix.artifact_name }}.zip
           path: ${{ matrix.artifact_name }}.zip
-
-#  build-windows:
-#    name: Build on Windows
-#    runs-on: ${{ matrix.runner }}
-#    strategy:
-#      matrix:
-#        include:
-#    steps:
-#      - name: Check out code
-#        uses: actions/checkout@v4
-#
-#
-#
-#
-#      - name: Build (Windows)
-#        if: matrix.os == 'windows'
-#        run: |
-#          make
-#          move dealer.exe ${{ matrix.artifact_name }}
-
 
   release:
     name: Create Release
