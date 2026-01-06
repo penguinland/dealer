@@ -1,4 +1,4 @@
-/*  This routine prints a hand in PBN format 
+/*  This routine prints a hand in PBN format
     Added by Henk Uijterwaal, Feb 1999            */
 
 #include <stdio.h>
@@ -24,7 +24,6 @@ int printpbn (int board, deal d) {
 
   /* Local variables */
   time_t timet;
-  size_t len;
   char timearray[12];
   int player, suit, rank;
 
@@ -38,24 +37,24 @@ int printpbn (int board, deal d) {
 
   /* Today's date */
   timet = time(&timet);
-  len = strftime (timearray, 12, "%Y.%m.%d", localtime(&timet));
+  strftime (timearray, 12, "%Y.%m.%d", localtime(&timet));
   printf ("[Date \"%s\"]\n", timearray);
 
   printf ("[Board \"%d\"]\n", board+1);
- 
-  /* Blank tags for the players */ 
+
+  /* Blank tags for the players */
   printf ("[West \"-\"]\n");
   printf ("[North \"-\"]\n");
   printf ("[East \"-\"]\n");
   printf ("[South \"-\"]\n");
-   
+
   /* Dealer, rotates unless set by the user */
-  if ((maxdealer < 0) || (maxdealer > 3)) { 
+  if ((maxdealer < 0) || (maxdealer > 3)) {
      printf ("[Dealer \"%s\"]\n", dealer_name[board%4]);
   } else {
     printf ("[Dealer \"%s\"]\n", dealer_name[maxdealer]);
   }
-  
+
   /* Vulnerability, rotates unless set by the user */
   if ((maxvuln < 0) || (maxvuln > 3)) {
      printf ("[Vulnerable \"%s\"]\n", vulner_name[board_vul[board%16]]);

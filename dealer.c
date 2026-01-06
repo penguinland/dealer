@@ -58,6 +58,8 @@ int maxdealer;
 int maxvuln;
 int will_print;
 
+const char *player_name[] = { "North", "East", "South", "West" };
+
 void yyerror (char *);
 
 #define TWO_TO_THE_13 (1<<13)
@@ -314,13 +316,8 @@ int true_dd (deal d, int l, int c) {
        we have to subtract 13 from that number. */
     return ((l == 0) || (l == 2)) ? 13 - resu : resu;
   } else {
-#ifdef MSDOS
-    /* Ugly fix for MSDOS. Requires a file called in.txt and will create the
-       files tst.pbn and out.txt. Note that we need not user crlf here, as it's
-       only dealer that will read the files anyway, Micke Hovmöller 990310 */
     FILE *f;
     char tn1[] = "tst.pbn";
-    char tn2[] = "out.txt";
     char res;
 
     f = fopen (tn1, "w+");
@@ -331,7 +328,11 @@ int true_dd (deal d, int l, int c) {
        /Micke Hovmöller 990312 */
     fprintf (f, "%c %c\n", "eswn"[l], "cdhsn"[c]);
     fclose (f);
-
+#ifdef MSDOS
+    /* Ugly fix for MSDOS. Requires a file called in.txt and will create the
+       files tst.pbn and out.txt. Note that we need not user crlf here, as it's
+       only dealer that will read the files anyway, Micke Hovmöller 990310 */
+    char tn2[] = "out.txt";
     fflush (stdout);
     system ("bridge.exe < in.txt > out.txt");
     fflush (stdout);
@@ -340,20 +341,9 @@ int true_dd (deal d, int l, int c) {
 
     fscanf (f, "%*[^\n]\nEnter argument line: %c", &res);
     fclose (f);
-    /* This will get the number of tricks EW can get.  If the user wanted NW, 
-       we have to subtract 13 from that number. */
-    return ((l == 1) || (l == 3)) ? 13 - trix (res) : trix (res);
 #else
-    FILE *f;
     char cmd[1024];
-    char tn1[256],  tn2[256];
-    char res;
-
-    f = fopen (tn1, "w+");
-    if (f == 0 ) error ("Can't open temporary file");
-    fprintcompact (f, d, 0);
-    fprintf (f, "%c %c\n", "eswn"[l], "cdhsn"[c]);
-    fclose (f);
+    char tn2[256];
     tmpnam (tn2);
     sprintf (cmd, "bridge -d -q %s >%s", tn1, tn2);
     system (cmd);
@@ -363,10 +353,10 @@ int true_dd (deal d, int l, int c) {
     fclose (f);
     remove (tn1);
     remove (tn2);
+#endif /* MSDOS */
     /* This will get the number of tricks EW can get.  If the user wanted NW, 
        we have to subtract 13 from that number. */
     return ((l == 1) || (l == 3)) ? 13 - trix (res) : trix (res);
-#endif /* MSDOS */
   }
 }
 
