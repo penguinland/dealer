@@ -18,7 +18,6 @@ char* input_file = 0;
   /* with VC++6, winsock2 declares ntohs and struct timeval */
   #pragma warning (disable : 4115)
   #include <winsock2.h>
-  #pragma comment(lib, "Ws2_32.lib")  // Copied from ChatGPT, unclear if correct
   #pragma warning (default : 4115)
 #else
   /* else we assume we can get ntohs/ntohl from netinet */
