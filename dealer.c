@@ -144,7 +144,7 @@ void yyparse ();
 int true_dd (deal d, int l, int c); /* prototype */
 
 #ifdef FRANCOIS
-  /* Special variables for exhaustive mode 
+  /* Special variables for exhaustive mode
      Exhaustive mode created by Francois DELLACHERIE, 01-1999  */
   int vectordeal;
   /* a vectordeal is a binary *word* of at most 26 bits: there are at most
@@ -153,13 +153,13 @@ int true_dd (deal d, int l, int c); /* prototype */
      the 26 minor cards between north and south (what a double fit !!!)
      Then those cards will be represented in a binary vector as shown below:
           Card    : DA DK ... D2 CA CK ... C4 C3 C2
-          Bit-Pos : 25 24     13 12 11      2  1  0  
+          Bit-Pos : 25 24     13 12 11      2  1  0
      The two players will be respectively represented by the bit values 0 and
      1. Let's say north gets the 0, and south the 1. Then the vector
      11001100000001111111110000 represents the following hands :
           North: D QJ8765432 C 5432
           South: D AKT9      C AKQJT9876
-     A suitable vectordeal is a vector deal with hamming weight equal to 13. 
+     A suitable vectordeal is a vector deal with hamming weight equal to 13.
      For computing those vectors, we use a straightforward
      meet in the middle approach.  */
   int exh_predealt_vector = 0;
@@ -172,7 +172,7 @@ int true_dd (deal d, int l, int c); /* prototype */
   unsigned char exh_empty_slots[2];
   /* the number of empty slots of those players */
   unsigned char exh_suit_length_at_map[NSUITS][26];
-  /* exh_suit_length_at_map[SUIT][POS] = 1 if the card at 
+  /* exh_suit_length_at_map[SUIT][POS] = 1 if the card at
      position POS is from the suit SUIT */
   unsigned char exh_suit_points_at_map[NSUITS][26];
   /* same as above with the hcp-value instead of 1 */
@@ -181,7 +181,7 @@ int true_dd (deal d, int l, int c); /* prototype */
      the previous vector: 1100110000000 and 11111111110000
                           msb               lsb
      exh_msb_suit_length[SUIT][MSB_VECTOR] represents the msb-contribution of
-     the MSB_VECTOR for the length of the hand for suit SUIT, and for player 0. 
+     the MSB_VECTOR for the length of the hand for suit SUIT, and for player 0.
      In the trivial above example, we have: exh_msb_suit_length[SUIT][MSBs] = 0
      unless SUIT == DIAMOND, = the number of 0 in MSB, otherwise.*/
   unsigned char exh_lsb_suit_length[NSUITS][TWO_TO_THE_13];
@@ -226,7 +226,7 @@ int score (int vuln, int suit, int level, int tricks) {
   int total = 0;
 
   /* going down */
-  if (tricks < 6 + level) return -50 * (1 + vuln) * (6 + level - tricks);  
+  if (tricks < 6 + level) return -50 * (1 + vuln) * (6 + level - tricks);
 
   /* Tricks */
   total = total + ((suit >= SUIT_HEART) ? 30 : 20) * (tricks - 6);
@@ -314,7 +314,7 @@ int get_tricks (int pn, int dn) {
 int true_dd (deal d, int l, int c) {
   if (loading && libdeal.valid) {
     int resu = get_tricks ((l + 1) % 4, (c + 1) % 5);
-    /* This will get the number of tricks EW can get.  If the user wanted NW, 
+    /* This will get the number of tricks EW can get.  If the user wanted NW,
        we have to subtract 13 from that number. */
     return ((l == 0) || (l == 2)) ? 13 - resu : resu;
   } else {
@@ -356,7 +356,7 @@ int true_dd (deal d, int l, int c) {
     remove (tn1);
     remove (tn2);
 #endif /* MSDOS */
-    /* This will get the number of tricks EW can get.  If the user wanted NW, 
+    /* This will get the number of tricks EW can get.  If the user wanted NW,
        we have to subtract 13 from that number. */
     return ((l == 1) || (l == 3)) ? 13 - trix (res) : trix (res);
   }
@@ -365,7 +365,7 @@ int true_dd (deal d, int l, int c) {
 void evalcontract () {
   int s;
   for (s = 0; s < 5; s++) {
-    results[1][s][dd (curdeal, 3, s)]++;      /* south declarer */ 
+    results[1][s][dd (curdeal, 3, s)]++;      /* south declarer */
     results[0][s][dd (curdeal, 1, s)]++;      /* north declarer */
   }
 }
@@ -590,7 +590,7 @@ void analyze (deal d, struct handstat *hsbase) {
       s = C_SUIT (curcard);
       r = C_RANK (curcard);
 
-      /* Enable this #if to dump a visual look at the hands as they are 
+      /* Enable this #if to dump a visual look at the hands as they are
          analysed.  Best bet is to use test.all, or something else that
          generates only one hand, lest you quickly run out of screen
          realestate */
@@ -687,7 +687,7 @@ void fprintcompact (FILE * f, deal d, int ononeline) {
           fprintf (f, "%c", ucrep[r]);
       if (s > 0) fprintf (f, ".");
     }
-    /* OK to use \n as this is mainly intended for internal dealer use. */ 
+    /* OK to use \n as this is mainly intended for internal dealer use. */
     fprintf (f, ononeline ? " " : "\n");
   }
 }
@@ -696,7 +696,7 @@ void printdeal (deal d) {
   int suit, player, rank, cards;
 
   printf ("%4d.\n", (nprod+1));
-  
+
   for (suit = SUIT_SPADE; suit >= SUIT_CLUB; suit--) {
     cards = 10;
     for (player = COMPASS_NORTH; player <= COMPASS_WEST; player++) {
@@ -946,7 +946,7 @@ void exh_get2players (void) {
       if (use_compass[player]) {
         /* We refuse to compute anything for a player who has already his (her)
            13 cards */
-        fprintf (stderr, 
+        fprintf (stderr,
          "Exhaust-mode error: cannot compute anything for %s (known hand)%s",
          player_name[player],crlf);
         exit (-1); /*NOTREACHED */
@@ -975,7 +975,7 @@ void exh_set_bit_values (int bit_pos, card onecard) {
   suit = C_SUIT (onecard);
   rank = C_RANK (onecard);
   for (suitloop = SUIT_CLUB; suitloop <= SUIT_SPADE; suitloop++) {
-    exh_suit_points_at_map[suitloop][bit_pos] = (suit == suitloop ? 
+    exh_suit_points_at_map[suitloop][bit_pos] = (suit == suitloop ?
           tblPointcount[0][rank] :0);
     exh_suit_length_at_map[suitloop][bit_pos] = (suit == suitloop ? 1 : 0);
   }
@@ -1394,7 +1394,7 @@ void action () {
         printf ("\n");
         break;
 
-      case ACT_PRINTES: 
+      case ACT_PRINTES:
         { struct expr *pex = (struct expr *) acp->ac_expr1;
           while (pex) {
             if (pex->ex_tr) {
@@ -1658,7 +1658,7 @@ int main (int argc, char **argv) {
         seed_provided = 1;
         seed = atol (optarg);
         if (seed == LONG_MIN || seed == LONG_MAX) {
-            fprintf (stderr, "Seed overflow: seed must be between %ld and %ld\n", 
+            fprintf (stderr, "Seed overflow: seed must be between %ld and %ld\n",
               LONG_MIN, LONG_MAX);
             exit (-1);
         }
@@ -1801,7 +1801,7 @@ int main (int argc, char **argv) {
     printf ("Generated %d hands\n", ngen);
     printf ("Produced %d hands\n", nprod);
     printf ("Initial random seed %lu\n", seed);
-    printf ("Time needed %8.3f sec%s", 
+    printf ("Time needed %8.3f sec%s",
              (tvstop.tv_sec + tvstop.tv_usec / 1000000.0 -
              (tvstart.tv_sec + tvstart.tv_usec / 1000000.0)), crlf);
   }
