@@ -6,6 +6,12 @@ FLEX    = flex
 YACC    = yacc
 # Note: this should be the Berkeley Yacc, sometimes called byacc
 
+ifeq ($(OS),Windows_NT)
+	# Link against ws2_32.lib, which is where ntohs and ntohl are defined.
+    LDFLAGS += -lws2_32
+endif
+
+
 PROGRAM  = dealer
 TARFILE  = ${PROGRAM}.tar
 GZIPFILE = ${PROGRAM}.tar.gz
@@ -21,7 +27,7 @@ YOBJ = defs.c
 
 
 dealer: ${OBJ} ${LOBJ} ${YOBJ}
-	$(CC) -o $@ ${OBJ}
+	$(CC) -o $@ ${OBJ} ${LDFLAGS}
 	
 clean:
 	rm -f ${OBJ} ${LOBJ} ${YOBJ}
