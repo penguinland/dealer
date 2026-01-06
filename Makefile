@@ -7,8 +7,8 @@ YACC    = yacc
 # Note: this should be the Berkeley Yacc, sometimes called byacc
 
 ifeq ($(OS),Windows_NT)
-	# Include ws2_32.lib, which is where ntohs and ntohl are defined
-    CFLAGS += -lws2_32
+	# Include ws2_32.lib, which is where ntohs and ntohl are defined.
+    LDFLAGS += -lws2_32
 endif
 
 
@@ -27,7 +27,7 @@ YOBJ = defs.c
 
 
 dealer: ${OBJ} ${LOBJ} ${YOBJ}
-	$(CC) -o $@ ${OBJ}
+	$(CC) -o $@ ${OBJ} ${LDFLAGS}
 	
 clean:
 	rm -f ${OBJ} ${LOBJ} ${YOBJ}
