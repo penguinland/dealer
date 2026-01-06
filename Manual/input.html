@@ -40,7 +40,7 @@ other purposes, or you will get a syntax error.
 
 <p>
 For many such keywords, both the singular and plural forms are recognized
-and accepted interchangeably; this also means both forms are reserved.  
+and accepted interchangeably; this also means both forms are reserved.
 This plural/singular duality applies to the following keywords:  <b>club,
 diamond, heart, spade, notrump, <A HREF="#hcp">hcp</A>, jack, queen, king,
 ace, <A HREF="#loser">loser</A>, <A HREF="#control">control</A>, <A
@@ -52,7 +52,7 @@ The program knows several basic commands, each consisting of a keyword and
 a parameter.  A parameter can be a single value or an <A
 HREF="#expr"><b>expression</b></A> that will be evaluated for every
 generated deal.  Besides that, the program allows the user to create
-identifiers and assign <A HREF="#expr"><b>expressions</b></A> to them.  
+identifiers and assign <A HREF="#expr"><b>expressions</b></A> to them.
 The identifiers can be used as parameters for the basic commands or inside
 other <A HREF="#expr"><B>expressions</B></A>, and this is exactly
 equivalent to using the <A HREF="#expr"><B>expressions</B></A> they
@@ -72,7 +72,7 @@ denote.
        Sets the vulnerability for the hand to 1 of the 4 possibilities, with
        none the default if the command is not in the input file.
        <P>
-       This command is primarily intended for cases where 
+       This command is primarily intended for cases where
        <A HREF="#action"><b>action-list</b></A> includes the
        <A HREF="#printpbn"><b>printpbn</b></A> action and the hands will be fed
        into another program for further analysis.  These programs often
@@ -81,9 +81,9 @@ denote.
        him to set the dealer.
 <li><B>dealer (compass)</B><BR>
        Sets the dealer on the hand to north, south, east or west, with
-       north the default if the command is not in the input file.   
+       north the default if the command is not in the input file.
 <li><B>predeal (predeallist)</B><BR>
-       This command can be used to assign specific cards to a player, for 
+       This command can be used to assign specific cards to a player, for
        example in problems like the common "you hold SAQ542, HKJ87, D32, CAK"
        and the auction starts 1C on your left, 2D by partner, pass on your
        left.  With the predeal command, you can assign these 13 cards to
@@ -91,7 +91,7 @@ denote.
        describing the 1C opener
        and the 2D overcall.  Finally, you generate a number of hands fitting
        the conditions and (hopefully) find the solution for your problem.
-       <P> 
+       <P>
        The predeallist consists of a player, followed by holding in one or
        more suits separated by commas.  A holding in a suit consist of a
        suit-symbol (S, H,  D or C) followed by cards (AKQJ, T for 10, 9..2).
@@ -102,17 +102,17 @@ denote.
        then generates hands by dividing the remaining 25 cards over the
        two other players.
        <p>
-       An alternate form of predeal specification is 
-       <A HREF="#suit"><b>(suit)(player)==1</b></A> (for example: 
-       <b>"spades(north)==1"</b> and 
+       An alternate form of predeal specification is
+       <A HREF="#suit"><b>(suit)(player)==number</b></A> (for example:
+       <b>"spades(north)==1"</b> and
        variants thereof for different suits, compass positions, numbers); this
        will ensure that (player) gets exactly the number of spades specified,
        (in this case, one), but that spade can be any card (except for the
-       ones predealt to other players).  
+       ones predealt to other players).
 
-       <b>predeal (player),(card)</b> 
-       will just force the program to give these cards to this player, 
-       without any restrictions for the remaining cards. 
+       <b>predeal (player),(card)</b>
+       will just force the program to give these cards to this player,
+       without any restrictions for the remaining cards.
        For example, <b>predeal north,S2</b> will give north the 2 of
        spades.  However, all other spade cards can still be dealt to north,
        so north will not necessarily have a singleton spade 2.
@@ -137,7 +137,7 @@ denote.
 <li><b><A NAME="condition">condition</A>
          (<A HREF="#expr">expression</A>)<br></b>
        For every generated hand, the <A HREF="#expr"><b>expression</b></A> is
-       evaluated.  If it is true (non zero), then the corresponding 
+       evaluated.  If it is true (non zero), then the corresponding
        <A HREF="#action"><b>action</b></A> is executed.  If you do not
        specify a condition the constant 1 (always true) will be assumed.
        <p>
@@ -178,7 +178,7 @@ make sense in a bridge program present:
  <LI> <B>()</B>: Brackets.  The program uses the normal C-rules to evaluate
       expressions.  With brackets this can be changed, e.g. <b>2*a+b</b> is
       evaluated by multiplying <b>a</b> by 2, then adding <b>b</b>. Changing
-      this into <i>2*(a+b)</i> reverses this. 
+      this into <i>2*(a+b)</i> reverses this.
  <LI> <B>?:</B> the ternary "selection" operator. The operand before
       the <b>?</b> is first evaluated; if true, then the one right
       after the <b>?</b> and before the <b>:</b> is evaluated (and
@@ -196,9 +196,9 @@ minornorth = <A HREF="#suit">clubs</A>(north) > <A HREF="#suit">diamonds</A>(nor
 </PRE>
 </FONT>
       The program will first evaluate the "clubs(north)>diamonds(north)" part.
-      If this is true, then 
+      If this is true, then
       <A HREF="#hcp">hcp(north,clubs)</A> will be assigned to minornorth.
-      If not, then minornorth will be set to 
+      If not, then minornorth will be set to
       <A HREF="#hcp">hcp(north,diamonds)</A>.
       This line is equivalent to the following piece of C-like code:
 <FONT COLOR="BLUE">
@@ -232,7 +232,7 @@ Besides that, special operators useful in a bridge-program are provided:
            alternate-count number N (from 0 to 9) for the player named
    <li><b> ptN ( (compass), (suit) )</b>, eg ptN(south, spades)<br>
            the value of alternate-count number N using the specified suit
-           and player 
+           and player
    <li><b> tens, jacks, queens, kings, aces, top2, top3, top4, top5, c13</b><br>
            alternate, readable synonyms for <b>pt0</b> to <b>pt9</b> in
            order -- the names correspond to what these alternate-counts
@@ -248,16 +248,16 @@ Besides that, special operators useful in a bridge-program are provided:
            case the things being counted can be quite different).
    <li><b> <A NAME="control">control ((compass))</A></b>, eg control(north)<br>
            The number of controls using A=2, K=1.
-           It is possible to generate hands with N controls using the 
+           It is possible to generate hands with N controls using the
            <A HREF="#hcp">hcp()</A>
-           function.   However, one has to override the standard 
+           function.   However, one has to override the standard
            pointcount table for that, making it impossible to generate
-           hands with requirements on hcp and controls  
+           hands with requirements on hcp and controls
            (for example, "
            <A HREF="#hcp">hcp(north)</A>&gt;6 and control(north)&lt;3").
 	   This function solves that problem.
    <li><b> control ((compass, (suit))</b>, eg control(north, spades)<br>
-           The number of controls using A=2, K=1 in a suit.  
+           The number of controls using A=2, K=1 in a suit.
    <li><b> <A NAME="loser">loser ((compass))</A></b>, eg loser(north)<br>
            The number of losers in the hand, or the sum of the number of
            losers in each suit.  The program does <B>not</B> apply any
@@ -292,7 +292,7 @@ Besides that, special operators useful in a bridge-program are provided:
 	the given contract, at the given vulnerability condition, is
 	played and the given number of tricks are made.
     The syntax for "contract" is of the form "x3N" for 3 no-trumps,
-    "x7C" for 7 clubs, etc; the leading "x" is needed.  There is 
+    "x7C" for 7 clubs, etc; the leading "x" is needed.  There is
     currently no way to specify that the contract is doubled, nor
     that it is re-doubled. The result will be positive if the
     contract makes, negative if it goes down.
@@ -317,7 +317,7 @@ Besides that, special operators useful in a bridge-program are provided:
         <P>
         Digits can be replaced by the letter <B>"x"</B> to match any length,
         so "55xx" specifies a hand with 5 spades, 5 hearts and 3 cards
-        in the minors. 
+        in the minors.
         <P>
         The <B>"any"</B> operator can be prepended to a shape.  This will
         remove the order of the suits, so "any 4333" specifies any
@@ -326,15 +326,15 @@ Besides that, special operators useful in a bridge-program are provided:
         Adding all this together allows you to write expressions like:
         <BLOCKQUOTE>
         shape(north, any 4333 + 54xx - any 0xxx)
-        </BLOCKQUOTE> 
-        requiring north to hold any 4333, 5 spades and 4 hearts, but 
-        excluding any distribution with a void.  
+        </BLOCKQUOTE>
+        requiring north to hold any 4333, 5 spades and 4 hearts, but
+        excluding any distribution with a void.
         <P>
 	This operator is one of the most important in the program and is
 	very efficiently implemented. Any shape() call, no matter how
 	complicated is executed in constant time. Use shape()
 	for all length expressions if you can.  There is a maximum of 32 shape()
-        commands in an input file.  
+        commands in an input file.
    <li><b> hascard ( (compass), (card) )</b>, eg hascard(east, TC)<br>
         whether east holds the 10 (T) of clubs
  </UL>
@@ -362,7 +362,7 @@ The different actions are:
 	start practicing.
 <li><b>printew</b><br>
        Prints the east and west hands only, with west to the left of
-       east.  This is useful for generating examples for bidding 
+       east.  This is useful for generating examples for bidding
        sequences.  Generate the 2 hands then add comments in a text editor
        to the file.
 <li><b> <A NAME="#printpbn">printpbn</A></b><br>
@@ -374,7 +374,7 @@ The different actions are:
 <li><b>printoneline [optional expression]</b><br>
        Print the output, and optionally an expression, in very
        compact form (1 line per deal).
-<li><b>printes (list of strings and 
+<li><b>printes (list of strings and
     <A HREF="#expr">expressions</A>)</b><br>
     Prints one or more expressions and strings; separate them with
     commas if there is more than one, and use \n to indicate end
@@ -433,10 +433,10 @@ action     printall
 This produces 25 hands, including, for example, with this one:
 <FONT COLOR="BLUE">
 <PRE>
-J 7 3               9 8                 A Q 5 4 2           K T 6 
-3                   9 6 4 2             K J 8 7             A Q T 5 
-K Q J T 9 8 5       7                   3 2                 A 6 4 
-T 5                 9 8 7 4 3 2         A K                 Q J 6 
+J 7 3               9 8                 A Q 5 4 2           K T 6
+3                   9 6 4 2             K J 8 7             A Q T 5
+K Q J T 9 8 5       7                   3 2                 A 6 4
+T 5                 9 8 7 4 3 2         A K                 Q J 6
 </PRE>
 </FONT>
 Note that the hands that you get depend on the seed of the random
@@ -456,7 +456,7 @@ west1h = hearts(west)>= 5
 west1s = spades(west)>= 5
 west1n = shape(west, any 4333 + any 4432 + any 5332 - 5xxx - x5xx) &&
          (hcp(west)>14 && hcp(west)<18)
-west1c = hcp(west)>11 && clubs(west)>= 3 && 
+west1c = hcp(west)>11 && clubs(west)>= 3 &&
          (not west1n) && (not west1s) && (not west1h) && (not west1d)
 </PRE>
 </FONT>
@@ -466,7 +466,7 @@ or with a side 4 or 5 card major.  These distributions are excluded with:
 <PRE>
 north2d = (hcp(north)>5 && (hcp(north)<12) &&
           shape (north, xx6x + xx7x - any 4xxx - any 5xxx)
-</PRE> 
+</PRE>
 </FONT>
 making the complete example:
 <FONT COLOR="BLUE">
