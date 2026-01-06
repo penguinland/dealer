@@ -12,7 +12,9 @@ long seed = 0;
 int quiet = 0;
 char* input_file = 0;
 
-#ifdef _MSC_VER
+// The check on the next line should work on both 32- and 64-bit Windows systems
+// despite the way it sounds.
+#ifdef _WIN32
   /* with VC++6, winsock2 declares ntohs and struct timeval */
   #pragma warning (disable : 4115)
   #include <winsock2.h>
