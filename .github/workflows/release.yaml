@@ -73,8 +73,7 @@ jobs:
         if: matrix.os == 'windows'
         # Blindly copied from ChatGPT, no idea if this is idiomatic
         run: |
-          Compress-Archive -Path dealer.exe \
-                           -DestinationPath ${{ matrix.artifact_name }}.zip
+          Compress-Archive -Path dealer.exe -DestinationPath ${{ matrix.artifact_name }}.zip
 
       - name: Upload artifact
         uses: actions/upload-artifact@v6
