@@ -1710,7 +1710,13 @@ int main (int argc, char **argv) {
 
   /* The most suspect part of this program */
   if (!seed_provided) {
-    (void) time (&seed);
+#ifdef _WIN32
+    long long int time_copy;
+#else
+    long int time_copy;
+#endif /* _MSC_VER */
+    (void) time (&time_copy);
+    seed = (long)time_copy;
   }
   SRANDOM (seed);
 
