@@ -1,0 +1,61 @@
+name: Compile
+
+on:
+  pull_request:
+
+jobs:
+  build:
+    name: Build
+    runs-on: ${{ matrix.runner }}
+    strategy:
+      matrix:
+        include:
+          - os: linux
+            runner: ubuntu-24.04-arm
+          - os: linux
+            runner: ubuntu-latest
+          - os: macos
+            runner: macos-latest
+          - os: macos
+            runner: macos-15-intel
+          - os: windows
+            runner: windows-latest
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+
+      - name: Set up build environment - Linux
+        if: matrix.os == 'linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gcc flex yacc make
+
+      - name: Set up build environment - Mac
+        if: matrix.os == 'macos'
+        run: brew install gcc flex byacc make
+
+      - name: Set up build environment - Windows
+        if: matrix.os == 'windows'
+        # Blindly copied from ChatGPT, no idea if this is idiomatic
+        uses: msys2/setup-msys2@v2
+        with:
+          msystem: MINGW64
+          update: true
+          install: >
+            mingw-w64-x86_64-gcc
+            flex
+            bison
+            make
+
+      - name: Build the executable (non-Windows)
+        if: matrix.os != 'windows'
+        run: make
+
+      - name: Build the executable (Windows)
+        if: matrix.os == 'windows'
+        # Blindly copied from ChatGPT, no idea if this is idiomatic
+        shell: msys2 {0}
+        run: |
+          export PATH="/mingw64/bin:$PATH"
+          make
