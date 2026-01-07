@@ -4,6 +4,7 @@
 #include <assert.h>
 #include <string.h>
 #include <limits.h>
+#include <signal.h>
 
 #include "dealer.h"
 #include "fast_randint.h"
@@ -97,6 +98,9 @@ int imparr[24] = { 10,   40,   80,  120,  160,  210,  260,  310,  360,
 
 deal fullpack;
 deal stacked_pack;
+
+int time_limit = 0;
+int time_is_up_no_hands_produced = 0;
 
 // card_pack contains all 52 cards, split up by suit. Within a suit, predealt
 // cards get moved to the end of the list, and the count of remaining cards is
@@ -1610,6 +1614,10 @@ void printew (deal d) {
   printf ("\n");
 }
 
+void sigalrm_handler (int signal) {
+  if (nprod == 0) time_is_up_no_hands_produced = 1;
+}
+
 int main (int argc, char **argv) {
   int seed_provided = 0;
   extern int optind;
@@ -1625,7 +1633,7 @@ int main (int argc, char **argv) {
 
   gettimeofday (&tvstart, (void *) 0);
 
-  while ((c = getopt (argc, argv, "023ehuvmqp:g:s:l:V")) != (char)EOF) {
+  while ((c = getopt (argc, argv, "023ehuvmqp:g:s:l:t:V")) != (char)EOF) {
     switch (c) {
       case '0':
       case '2':
@@ -1662,6 +1670,13 @@ int main (int argc, char **argv) {
               LONG_MIN, LONG_MAX);
             exit (-1);
         }
+        break;
+      case 't':
+        time_limit = atoi (optarg);
+	if (time_limit > 0) {
+		signal (SIGALRM, sigalrm_handler);
+		alarm(time_limit);
+	}
         break;
       case 'u':
         uppercase = 1;
@@ -1746,6 +1761,9 @@ int main (int argc, char **argv) {
                100 * nprod / maxproduce);
           }
         }
+        if (time_is_up_no_hands_produced) {
+            break;
+        }
       }
       break;
 #ifdef FRANCOIS
@@ -1811,5 +1829,6 @@ int main (int argc, char **argv) {
              (tvstop.tv_sec + tvstop.tv_usec / 1000000.0 -
              (tvstart.tv_sec + tvstart.tv_usec / 1000000.0)), crlf);
   }
+  if (time_is_up_no_hands_produced) exit(1);
   return 0;
 }
