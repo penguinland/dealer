@@ -5,7 +5,7 @@ on:
 
 jobs:
   build:
-    name: Build
+    name: Build for Release
     runs-on: ${{ matrix.runner }}
     strategy:
       matrix:
