@@ -99,8 +99,10 @@ int imparr[24] = { 10,   40,   80,  120,  160,  210,  260,  310,  360,
 deal fullpack;
 deal stacked_pack;
 
+// time_limit: (optional) seconds to wait before timing out.
+// if 0 or not provided, wait forever.
 int time_limit = 0;
-int time_is_up_no_hands_produced = 0;
+int time_is_up_no_hands_produced = 0; // bool
 
 // card_pack contains all 52 cards, split up by suit. Within a suit, predealt
 // cards get moved to the end of the list, and the count of remaining cards is
