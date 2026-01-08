@@ -1673,10 +1673,10 @@ int main (int argc, char **argv) {
         break;
       case 't':
         time_limit = atoi (optarg);
-	if (time_limit > 0) {
-		signal (SIGALRM, sigalrm_handler);
-		alarm(time_limit);
-	}
+        if (time_limit > 0) {
+          signal (SIGALRM, sigalrm_handler);
+          alarm(time_limit);
+        }
         break;
       case 'u':
         uppercase = 1;
