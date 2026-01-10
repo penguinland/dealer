@@ -156,7 +156,7 @@ struct action {
 #define RK_JACK          9
 #define RK_TEN           8
 #define RK_NINE          7
-#define RK_EIGHT     6
+#define RK_EIGHT         6
 
 #ifdef WIN32
 #define bcopy(s,t,size) memcpy(t,s,size)
