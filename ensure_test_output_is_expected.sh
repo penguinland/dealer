@@ -19,15 +19,15 @@ output_length="$(cat tmp.log \
                | grep -v -- --- \
                | wc -l
                )"
-# The output remaining is 6 lines long, consisting of make explaining what
-# commands it's running.
+# The remaining output shoud consist of make explaining what commands it's
+# running. On Linux, this is 6 lines long, but on Mac it's only 4.
 
 cat tmp.log
 echo ''
 echo "Raw result length: $(cat tmp.log | wc -l)"
 echo "Processed result length: $output_length"
 
-if [ "$output_length" != "6" ]; then
+if [ "$output_length" != "6" && "$output_length" != "4" ]; then
     echo 'Unexpected test output length!'
     echo 'Non-filtered lines are:'
     echo ''
