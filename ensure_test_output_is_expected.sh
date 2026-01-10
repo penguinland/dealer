@@ -24,8 +24,8 @@ output_length="$(cat tmp.log \
 
 cat tmp.log
 echo ''
-echo "Raw result length: $(cat tmp.log | wc -l)"
-echo "Processed result length: $output_length"
+echo "Raw result length: '$(cat tmp.log | wc -l)'"
+echo "Processed result length: '$output_length'"
 
 if [[ "$output_length" != "6" && "$output_length" != "4" ]]; then
     echo 'Unexpected test output length!'
