@@ -5,7 +5,7 @@ on:
 
 jobs:
   build:
-    name: Build
+    name: Build and Test
     runs-on: ${{ matrix.runner }}
     strategy:
       matrix:
@@ -48,7 +48,7 @@ jobs:
             bison
             make
 
-      - name: Build the executable (non-Windows)
+      - name: Build the executable (Unix)
         if: matrix.os != 'windows'
         run: make
 
@@ -59,3 +59,11 @@ jobs:
         run: |
           export PATH="/mingw64/bin:$PATH"
           make
+
+      - name: Make sure tests run (Unix)
+        if: matrix.os != 'windows'
+        run: ./ensure_test_output_is_expected.sh
+
+      - name: Make sure tests run (Windows)
+        if: matrix.os == 'windows'
+        run: bash ./ensure_test_output_is_expected.sh
