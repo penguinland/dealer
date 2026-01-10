@@ -8,6 +8,8 @@ make test > tmp.log
 #   reference output (e.g., "123c123")
 # - lines containing at least 3 consecutive hyphens, which are put in between
 #   each example run and in between each piece of diff output
+# The sed at the end is that Mac's wc command puts a bunch of leading spaces in,
+# which we strip out.
 output_length="$(cat tmp.log \
                | grep -v 'Time needed' \
                | grep -v 'Now processing' \
@@ -17,7 +19,8 @@ output_length="$(cat tmp.log \
                | grep -v '< .Date .20..\...\.....$' \
                | grep -v '\([0-9]\+\)c\1' \
                | grep -v -- --- \
-               | wc -l
+               | wc -l \
+               | sed 's/[[:space:]]//g'
                )"
 # The remaining output shoud consist of make explaining what commands it's
 # running. On Linux, this is 6 lines long, but on Mac it's only 4.
