@@ -47,4 +47,4 @@ if [[ "$output_length" != "6" && "$output_length" != "4" ]]; then
     exit 1
 fi
 
-echo "success"
+echo 'Success!'
