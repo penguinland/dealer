@@ -75,10 +75,10 @@ jobs:
         # Blindly copied from ChatGPT, no idea if this is idiomatic
         run: Compress-Archive `
                -Path dealer.exe, `
-                     Pre_Processors/*, `
-                     Post_Processors/*, `
-                     Manual/*, `
-                     Random/* `
+                     Pre_Processors, `
+                     Post_Processors, `
+                     Manual, `
+                     Random `
                -DestinationPath ${{ matrix.artifact_name }}.zip
 
       - name: Upload artifact
