@@ -38,7 +38,7 @@ jobs:
 
       - name: Set up build environment - Mac
         if: matrix.os == 'macos'
-        run: brew install gcc flex byacc make
+        run: brew install flex byacc make
 
       - name: Set up build environment - Windows
         if: matrix.os == 'windows'
