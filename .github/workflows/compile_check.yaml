@@ -1,4 +1,4 @@
-name: Compile
+name: Compile and Test
 
 on:
   pull_request:
