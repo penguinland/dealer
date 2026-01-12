@@ -59,7 +59,7 @@ jobs:
           make
           strip dealer
           zip -r ${{ matrix.artifact_name }} \
-            dealer Pre_Processors Post_Processors Manual Random
+            dealer Pre_Processors Post_Processors Manual Random Examples
 
       - name: Build the executable (Windows)
         if: matrix.os == 'windows'
@@ -75,7 +75,8 @@ jobs:
         # Blindly copied from ChatGPT, no idea if this is idiomatic
         run: |
           Compress-Archive `
-            -Path dealer.exe, Pre_Processors, Post_Processors, Manual, Random `
+            -Path dealer.exe, Pre_Processors, Post_Processors, Manual, `
+                  Random, Examples `
             -DestinationPath ${{ matrix.artifact_name }}.zip
 
       - name: Upload artifact
