@@ -73,13 +73,10 @@ jobs:
       - name: Zip the executable (Windows)
         if: matrix.os == 'windows'
         # Blindly copied from ChatGPT, no idea if this is idiomatic
-        run: Compress-Archive `
-               -Path dealer.exe, `
-                     Pre_Processors, `
-                     Post_Processors, `
-                     Manual, `
-                     Random `
-               -DestinationPath ${{ matrix.artifact_name }}.zip
+        run: |
+          Compress-Archive `
+            -Path dealer.exe, Pre_Processors, Post_Processors, Manual, Random `
+            -DestinationPath ${{ matrix.artifact_name }}.zip
 
       - name: Upload artifact
         uses: actions/upload-artifact@v6
