@@ -1676,8 +1676,12 @@ int main (int argc, char **argv) {
       case 't':
         time_limit = atoi (optarg);
         if (time_limit > 0) {
+#ifdef SIGALRM
           signal (SIGALRM, sigalrm_handler);
           alarm(time_limit);
+#else
+          sprintf(stderr, "WARNING: SIGALRM (and time limit) not supported, will run to completion...\n");
+#endif
         }
         break;
       case 'u':
