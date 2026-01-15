@@ -69,7 +69,8 @@ with the same seed will produce the same sequence of hands.
 =item B<-t> I<number>
 
 Aborts execution after number of seconds if no hands have been produced
-under the given conditions.
+under the given conditions. Requires a system with SIGALRM support, else 
+it is a no-op.
 
 =item B<-u>
 

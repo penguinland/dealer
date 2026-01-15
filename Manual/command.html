@@ -19,6 +19,9 @@
  <li> <b>-s number :</b> Uses number as the seed for the random generator,
       running the program twice with the same seed, will produce the
       same sequence of hands.  
+ <li> <b>-t number :</b> Uses number as the time limit (in seconds)
+      to generate the first hand. Requires a system that supports SIGALRM,
+      else it is a no-op.
  <li> <b>-u :</b> Select upper- or lowercase for the symbols "AKQJT".
  <li> <b>-v :</b> Verbose output, prints statistics at the end of the run.
  <li> <b>-V :</b> Emits a version-identification string and exits
