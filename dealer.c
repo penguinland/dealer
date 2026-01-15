@@ -1680,7 +1680,7 @@ int main (int argc, char **argv) {
           signal (SIGALRM, sigalrm_handler);
           alarm(time_limit);
 #else
-          sprintf(stderr, "WARNING: SIGALRM (and time limit) not supported, will run to completion...\n");
+          fprintf(stderr, "WARNING: SIGALRM (and time limit) not supported, will run to completion...\n");
 #endif
         }
         break;
